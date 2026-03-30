@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Preview — Ripa Elevate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/nav.css">
+<link rel="stylesheet" href="css/components.css">
+<style>
+.preview-hero{padding:88px 0 56px;text-align:center;}
+.preview-hero h1.dis em{color:var(--sage);}
+.preview-hero .blg{max-width:560px;margin:16px auto 28px;}
+
+/* Full dashboard mockup */
+.db-mockup{background:var(--white);border:1px solid var(--s200);border-radius:var(--r32);overflow:hidden;box-shadow:var(--sh-xl);max-width:960px;margin:0 auto;}
+.db-topbar{background:var(--s900);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+.db-brand{font-family:var(--serif);font-size:1rem;color:var(--white);display:flex;align-items:center;gap:8px;}
+.db-topbar-right{display:flex;align-items:center;gap:10px;}
+.db-user-chip{background:var(--s800);border-radius:var(--r-full);padding:5px 12px;font-size:.72rem;color:var(--s300);}
+.db-layout{display:grid;grid-template-columns:190px 1fr;}
+.db-sidebar{background:var(--s50);border-right:1px solid var(--s200);padding:14px 8px;min-height:540px;}
+.db-main{padding:22px 24px;}
+.db-greeting{margin-bottom:18px;}
+.db-greeting h2{font-family:var(--serif);font-size:1.3rem;color:var(--s900);}
+.db-greeting p{font-size:.8rem;color:var(--s400);margin-top:2px;}
+.child-card{background:var(--s50);border:1px solid var(--s200);border-radius:var(--r16);padding:16px;margin-bottom:12px;}
+.child-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.child-name{font-weight:600;font-size:.9rem;color:var(--s900);}
+.child-meta{font-size:.72rem;color:var(--s400);}
+.cat-bars{display:flex;flex-direction:column;gap:7px;}
+.cat-bar{display:flex;align-items:center;gap:10px;}
+.cat-bar-name{font-size:.7rem;color:var(--s500);width:80px;flex-shrink:0;}
+.cat-bar-track{flex:1;height:5px;background:var(--s200);border-radius:3px;overflow:hidden;}
+.cat-bar-fill{height:100%;border-radius:3px;background:var(--sage);}
+.cat-bar-label{font-size:.68rem;font-weight:600;color:var(--s600);width:28px;text-align:right;flex-shrink:0;}
+.db-actions{display:flex;gap:8px;margin-top:12px;}
+
+.feature-rows{padding:72px 0 96px;}
+.feat-row{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;padding:48px 0;border-top:1px solid var(--s200);}
+.feat-row:first-child{border-top:none;padding-top:0;}
+.feat-row-text h3{font-family:var(--serif);font-size:1.3rem;margin-bottom:10px;}
+.feat-row-text p{font-size:.88rem;color:var(--s500);line-height:1.78;}
+
+@media(max-width:960px){.db-layout{grid-template-columns:1fr;}.db-sidebar{display:none;}.feat-row{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<nav id="nav">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-mark"><svg viewBox="0 0 20 20" fill="none" width="20" height="20"><path d="M4 10C4 6.686 6.686 4 10 4" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M16 10C16 13.314 13.314 16 10 16" stroke="#7c9a7e" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="10" r="2" fill="white"/></svg></div>
+    Ripa <em>Elevate</em>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html"        class="nav-link">Home</a></li>
+    <li><a href="how-it-works.html" class="nav-link">How It Works</a></li>
+    <li><a href="for-parents.html"  class="nav-link">For Parents</a></li>
+    <li><a href="about.html"        class="nav-link">Our Story</a></li>
+  </ul>
+  <div class="nav-auth" id="nav-guest">
+    <a href="app/login.html"   class="nav-link">Sign In</a>
+    <a href="for-parents.html" class="nav-cta">Get Started</a>
+  </div>
+  <button class="nav-burger" id="nav-burger"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html" class="nav-link">Home</a>
+  <a href="for-parents.html" class="nav-cta">Get Started</a>
+</div>
+
+<div class="page-body">
+
+<section class="preview-hero">
+  <div class="wrap">
+    <div class="lbl lbl-sage">Parent Dashboard</div>
+    <h1 class="dis mt-12">Everything about your child, <em>in one place</em></h1>
+    <p class="blg">Your dashboard shows all children linked to your account, their current levels, full history, and exactly when they can reassess next.</p>
+    <a href="app/signup.html" class="btn btn-dark">Start Free Trial</a>
+  </div>
+</section>
+
+<!-- Dashboard mockup -->
+<div class="wrap" style="padding-bottom:64px">
+  <div class="db-mockup">
+    <div class="db-topbar">
+      <div class="db-brand">
+        <div style="width:22px;height:22px;background:var(--sage);border-radius:5px;display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 20 20" fill="none" width="12" height="12"><path d="M4 10C4 6.686 6.686 4 10 4" stroke="white" stroke-width="2.2" stroke-linecap="round"/><path d="M16 10C16 13.314 13.314 16 10 16" stroke="white" stroke-width="2.2" stroke-linecap="round"/><circle cx="10" cy="10" r="2" fill="white"/></svg></div>
+        Ripa Elevate
+      </div>
+      <div class="db-topbar-right">
+        <div class="db-user-chip">👋 Welcome, Sarah</div>
+      </div>
+    </div>
+    <div class="db-layout">
+      <div class="db-sidebar">
+        <div class="sidebar-section">Overview</div>
+        <div class="sidebar-item active">🏠 Dashboard</div>
+        <div class="sidebar-item">📊 Reports</div>
+        <div class="sidebar-section">My Children</div>
+        <div class="sidebar-item">👦 Alex M.</div>
+        <div class="sidebar-item">👧 Jordan M.</div>
+        <div class="sidebar-section">Account</div>
+        <div class="sidebar-item">⚙️ Settings</div>
+        <div class="sidebar-item">💳 Subscription</div>
+      </div>
+      <div class="db-main">
+        <div class="db-greeting">
+          <h2>Your Children</h2>
+          <p>2 profiles · Last updated today</p>
+        </div>
+        <div class="child-card">
+          <div class="child-card-top">
+            <div><div class="child-name">Alex M.</div><div class="child-meta">7th Grade · Has IEP</div></div>
+            <span class="chip chip-sage">5 of 7 complete</span>
+          </div>
+          <div class="cat-bars">
+            <div class="cat-bar"><span class="cat-bar-name">Math</span><div class="cat-bar-track"><div class="cat-bar-fill" style="width:75%"></div></div><span class="cat-bar-label">L3</span></div>
+            <div class="cat-bar"><span class="cat-bar-name">Reading</span><div class="cat-bar-track"><div class="cat-bar-fill" style="width:50%;background:var(--teal)"></div></div><span class="cat-bar-label">L2</span></div>
+            <div class="cat-bar"><span class="cat-bar-name">Money</span><div class="cat-bar-track"><div class="cat-bar-fill" style="width:75%"></div></div><span class="cat-bar-label">L3</span></div>
+            <div class="cat-bar"><span class="cat-bar-name">Social</span><div class="cat-bar-track"><div class="cat-bar-fill" style="width:25%;background:var(--amb)"></div></div><span class="cat-bar-label">L1</span></div>
+            <div class="cat-bar"><span class="cat-bar-name">Safety</span><div class="cat-bar-track"><div class="cat-bar-fill" style="width:50%;background:var(--teal)"></div></div><span class="cat-bar-label">L2</span></div>
+          </div>
+          <div class="db-actions">
+            <button class="btn btn-dark btn-sm">View Full Report</button>
+            <button class="btn btn-outline btn-sm">Start Assessment</button>
+          </div>
+        </div>
+        <div class="child-card">
+          <div class="child-card-top">
+            <div><div class="child-name">Jordan M.</div><div class="child-meta">5th Grade</div></div>
+            <span class="chip chip-amb">0 of 7 complete</span>
+          </div>
+          <p style="font-size:.8rem;color:var(--s400);">No assessments yet. Start Jordan's first assessment to build their skill profile.</p>
+          <div class="db-actions">
+            <button class="btn btn-dark btn-sm">Start First Assessment</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Feature rows -->
+<section class="feature-rows">
+  <div class="wrap">
+    <div class="feat-row">
+      <div class="feat-row-text">
+        <h3>All children under one account</h3>
+        <p>One login manages every child. Add as many student profiles as you need. Each gets their own assessment history, report archive, and retake schedule.</p>
+        <a href="app/signup.html" class="btn btn-outline mt-16">Create Account →</a>
+      </div>
+      <div style="background:var(--s50);border:1px solid var(--s200);border-radius:var(--r20);padding:28px">
+        <div class="lbl" style="margin-bottom:14px">Your Children</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--white);border:1px solid var(--s200);border-radius:var(--r12)">
+            <span style="font-size:.86rem;font-weight:500">Alex M. · 7th Grade</span>
+            <span class="chip chip-sage">5 categories</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--white);border:1px solid var(--s200);border-radius:var(--r12)">
+            <span style="font-size:.86rem;font-weight:500">Jordan M. · 5th Grade</span>
+            <span class="chip chip-amb">Not started</span>
+          </div>
+          <div style="padding:10px 12px;border:1.5px dashed var(--s300);border-radius:var(--r12);text-align:center;font-size:.8rem;color:var(--s400);cursor:pointer">+ Add another child</div>
+        </div>
+      </div>
+    </div>
+    <div class="feat-row">
+      <div style="background:var(--s50);border:1px solid var(--s200);border-radius:var(--r20);padding:28px">
+        <div class="lbl" style="margin-bottom:14px">Retake Status</div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--white);border:1px solid var(--s200);border-radius:var(--r12)"><span style="font-size:.82rem">Math · Alex</span><span class="chip chip-sage">Ready to retake</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--white);border:1px solid var(--s200);border-radius:var(--r12)"><span style="font-size:.82rem">Reading · Alex</span><span class="chip chip-amb">12 days left</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--white);border:1px solid var(--s200);border-radius:var(--r12)"><span style="font-size:.82rem">Money · Alex</span><span class="chip chip-amb">26 days left</span></div>
+        </div>
+      </div>
+      <div class="feat-row-text">
+        <h3>30-day retake schedule, automatically managed</h3>
+        <p>The platform enforces the 30-day window between assessments per category. Your dashboard shows exactly when each category becomes available again — no tracking required on your end.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-bottom" style="padding:32px 0 0">
+      <span>© 2025 Ripa Elevate</span>
+      <span><a href="for-parents.html">For Parents</a> · <a href="contact.html">Contact</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/nav.js"></script>
+<script>document.addEventListener('DOMContentLoaded', () => AuthManager.init());</script>
+</body>
+</html>
