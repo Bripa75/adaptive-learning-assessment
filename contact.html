@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Ripa Elevate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/nav.css">
+<link rel="stylesheet" href="css/components.css">
+<style>
+.contact-hero{padding:96px 0 64px;text-align:center;}
+.contact-hero .lbl{margin-bottom:14px;}
+.contact-hero h1.dis em{color:var(--sage);}
+
+.contact-layout{display:grid;grid-template-columns:1fr 1.4fr;gap:64px;align-items:start;padding-bottom:96px;}
+
+.contact-info h3{font-family:var(--serif);font-size:1.1rem;margin-bottom:8px;}
+.contact-info p{font-size:.86rem;color:var(--s500);line-height:1.75;margin-bottom:24px;}
+.contact-ways{display:flex;flex-direction:column;gap:12px;margin-top:28px;}
+.cw-item{display:flex;align-items:flex-start;gap:14px;padding:16px;background:var(--s50);border:1px solid var(--s200);border-radius:var(--r12);}
+.cw-icon{font-size:1.2rem;flex-shrink:0;margin-top:2px;}
+.cw-item h4{font-size:.84rem;font-weight:600;color:var(--s800);margin-bottom:2px;}
+.cw-item p{font-size:.78rem;color:var(--s500);}
+
+.contact-form-card{background:var(--white);border:1px solid var(--s200);border-radius:var(--r24);padding:40px;}
+.contact-form-card h2{font-family:var(--serif);font-size:1.5rem;margin-bottom:6px;}
+.contact-form-card .sm{margin-bottom:28px;}
+.inquiry-tabs{display:flex;gap:8px;margin-bottom:24px;}
+.itab{padding:7px 16px;border-radius:var(--r-full);border:1.5px solid var(--s200);font-size:.8rem;font-weight:500;cursor:pointer;font-family:var(--sans);background:var(--white);color:var(--s600);transition:all .15s;}
+.itab.active{background:var(--s900);border-color:var(--s900);color:var(--white);}
+
+@media(max-width:960px){.contact-layout{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<nav id="nav">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-mark"><svg viewBox="0 0 20 20" fill="none" width="20" height="20"><path d="M4 10C4 6.686 6.686 4 10 4" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M16 10C16 13.314 13.314 16 10 16" stroke="#7c9a7e" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="10" r="2" fill="white"/></svg></div>
+    Ripa <em>Elevate</em>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html"        class="nav-link">Home</a></li>
+    <li><a href="how-it-works.html" class="nav-link">How It Works</a></li>
+    <li><a href="for-parents.html"  class="nav-link">For Parents</a></li>
+    <li><a href="about.html"        class="nav-link">Our Story</a></li>
+  </ul>
+  <div class="nav-auth" id="nav-guest">
+    <a href="app/login.html"   class="nav-link">Sign In</a>
+    <a href="for-parents.html" class="nav-cta">Get Started</a>
+  </div>
+  <button class="nav-burger" id="nav-burger"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html" class="nav-link">Home</a>
+  <a href="for-parents.html" class="nav-link">For Parents</a>
+  <a href="for-parents.html" class="nav-cta">Get Started</a>
+</div>
+
+<div class="page-body">
+
+<section class="contact-hero">
+  <div class="wrap">
+    <div class="lbl lbl-sage">Contact</div>
+    <h1 class="dis">Get in touch with <em>our team</em></h1>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="contact-layout">
+
+      <div class="contact-info">
+        <h3>We're a small team — we read every message.</h3>
+        <p>Whether you're a parent with a question, a school administrator exploring options, or a clinician interested in referring families — we'd love to hear from you.</p>
+        <div class="contact-ways">
+          <div class="cw-item">
+            <div class="cw-icon">👨‍👩‍👧</div>
+            <div>
+              <h4>Parents</h4>
+              <p>Questions about the platform, your child's assessment, or your account. Use the form and select "Parent Question."</p>
+            </div>
+          </div>
+          <div class="cw-item">
+            <div class="cw-icon">🏫</div>
+            <div>
+              <h4>Schools &amp; Districts</h4>
+              <p>Interested in bringing Ripa Elevate into your school or district? Select "School / District Demo" for priority response.</p>
+            </div>
+          </div>
+          <div class="cw-item">
+            <div class="cw-icon">🩺</div>
+            <div>
+              <h4>Clinicians &amp; Therapists</h4>
+              <p>SLPs, OTs, and private practitioners — learn how Ripa Elevate can support your clients. Select "Clinician / Referral."</p>
+            </div>
+          </div>
+          <div class="cw-item">
+            <div class="cw-icon">📰</div>
+            <div>
+              <h4>Press &amp; Media</h4>
+              <p>We're always happy to talk about what we're building. Select "Press" for media inquiries.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form-card">
+        <h2>Send us a message</h2>
+        <p class="sm">We typically respond within one business day.</p>
+
+        <div id="form-success" class="alert alert-success hidden">
+          ✓ Message sent! We'll be in touch shortly.
+        </div>
+        <div id="form-error" class="alert alert-error hidden"></div>
+
+        <div class="inquiry-tabs">
+          <button class="itab active" onclick="setInquiry(this,'Parent Question')">Parent</button>
+          <button class="itab" onclick="setInquiry(this,'School / District Demo')">School</button>
+          <button class="itab" onclick="setInquiry(this,'Clinician / Referral')">Clinician</button>
+          <button class="itab" onclick="setInquiry(this,'Press')">Press</button>
+        </div>
+
+        <input type="hidden" id="inquiry-type" value="Parent Question">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Name <span class="req">*</span></label>
+            <input type="text" id="f-name" class="form-input" placeholder="Your name">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email <span class="req">*</span></label>
+            <input type="email" id="f-email" class="form-input" placeholder="you@example.com">
+          </div>
+        </div>
+
+        <div id="school-fields" class="hidden">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">School / Organization</label>
+              <input type="text" id="f-school" class="form-input" placeholder="School or district name">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Your Role</label>
+              <select id="f-role" class="form-select">
+                <option value="">Select role</option>
+                <option>Special Education Teacher</option>
+                <option>SLP / OT</option>
+                <option>School Psychologist</option>
+                <option>Administrator / Principal</option>
+                <option>District Administrator</option>
+                <option>Parent Advocate</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Message <span class="req">*</span></label>
+          <textarea id="f-message" class="form-textarea" rows="5" placeholder="What can we help you with?"></textarea>
+        </div>
+
+        <button class="btn btn-dark btn-full" id="submit-btn" onclick="submitContact()">Send Message</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-bottom" style="padding:32px 0 0">
+      <span>© 2025 Ripa Elevate</span>
+      <span><a href="index.html">Home</a> · <a href="for-parents.html">For Parents</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/nav.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => AuthManager.init());
+
+function setInquiry(btn, type) {
+  document.querySelectorAll('.itab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('inquiry-type').value = type;
+  const schoolFields = document.getElementById('school-fields');
+  if (type === 'School / District Demo' || type === 'Clinician / Referral') {
+    schoolFields.classList.remove('hidden');
+  } else {
+    schoolFields.classList.add('hidden');
+  }
+}
+
+async function submitContact() {
+  clearFormErrors();
+  const name    = document.getElementById('f-name').value.trim();
+  const email   = document.getElementById('f-email').value.trim();
+  const message = document.getElementById('f-message').value.trim();
+  const type    = document.getElementById('inquiry-type').value;
+
+  if (!name)    { showFormError('f-name', 'Name is required'); return; }
+  if (!email)   { showFormError('f-email', 'Email is required'); return; }
+  if (!message) { showFormError('f-message', 'Message is required'); return; }
+
+  const btn = document.getElementById('submit-btn');
+  setButtonLoading(btn, true, 'Sending…');
+
+  const { error } = await RE.Leads.save({
+    name,
+    email,
+    school:      document.getElementById('f-school')?.value || null,
+    role:        document.getElementById('f-role')?.value   || null,
+    inquiryType: type,
+    message,
+    source: 'contact_form'
+  });
+
+  setButtonLoading(btn, false);
+
+  if (error) {
+    document.getElementById('form-error').textContent = 'Something went wrong. Please try again.';
+    document.getElementById('form-error').classList.remove('hidden');
+  } else {
+    document.getElementById('form-success').classList.remove('hidden');
+    btn.classList.add('hidden');
+    document.querySelectorAll('.form-input,.form-textarea,.form-select,.itab').forEach(el => el.disabled = true);
+  }
+}
+</script>
+</body>
+</html>
