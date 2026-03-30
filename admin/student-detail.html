@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Detail — Ripa Elevate Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/nav.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+.detail-header{background:var(--white);border:1px solid var(--s200);border-radius:var(--r20);padding:28px;margin-bottom:20px;display:flex;align-items:center;gap:20px;}
+.detail-avatar{width:60px;height:60px;border-radius:50%;background:var(--sage);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1.5rem;color:var(--white);flex-shrink:0;}
+.detail-name{font-family:var(--serif);font-size:1.5rem;color:var(--s900);}
+.detail-meta{font-size:.78rem;color:var(--s500);margin-top:3px;}
+.results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;}
+.result-card{background:var(--white);border:1px solid var(--s200);border-radius:var(--r16);padding:18px;}
+.result-card-cat{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:var(--s400);margin-bottom:8px;}
+.result-card-level{font-family:var(--serif);font-size:1.6rem;color:var(--s900);line-height:1;}
+.result-card-label{font-size:.72rem;color:var(--s500);margin-top:3px;}
+.result-card-score{font-size:.76rem;font-weight:600;color:var(--sage);margin-top:8px;}
+.history-table{width:100%;border-collapse:collapse;background:var(--white);border-radius:var(--r16);overflow:hidden;border:1px solid var(--s200);}
+.history-table th{background:var(--s50);font-size:.67rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--s400);padding:10px 14px;border-bottom:1px solid var(--s200);text-align:left;}
+.history-table td{font-size:.8rem;color:var(--s600);padding:11px 14px;border-bottom:1px solid var(--s100);}
+.history-table tr:last-child td{border-bottom:none;}
+@media(max-width:760px){.results-grid{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+<nav id="nav" class="solid dark-nav">
+  <a href="dashboard.html" class="nav-logo" style="color:var(--white)">
+    <div class="nav-logo-mark"><svg viewBox="0 0 20 20" fill="none" width="20" height="20"><path d="M4 10C4 6.686 6.686 4 10 4" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M16 10C16 13.314 13.314 16 10 16" stroke="#7c9a7e" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="10" r="2" fill="white"/></svg></div>
+    Ripa <em style="color:var(--sage)">Elevate</em>
+  </a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="chip chip-sage" style="font-size:.68rem">Admin</span>
+    <a href="students.html"  class="nav-link" style="color:var(--s400)">← All Students</a>
+    <button class="btn btn-sm" style="background:var(--s800);color:var(--s400);border:1px solid var(--s700)" onclick="AuthManager.signOut()">Sign Out</button>
+  </div>
+</nav>
+
+<div class="page-body">
+  <div class="wrap" style="padding-top:32px;padding-bottom:96px">
+
+    <div id="detail-header-wrap">
+      <div style="display:flex;gap:12px;margin-bottom:20px">
+        <div class="skeleton" style="width:60px;height:60px;border-radius:50%"></div>
+        <div style="flex:1"><div class="skeleton" style="height:24px;width:200px;margin-bottom:8px"></div><div class="skeleton" style="height:14px;width:120px"></div></div>
+      </div>
+    </div>
+
+    <div id="results-section" style="margin-bottom:24px">
+      <h2 style="font-family:var(--serif);font-size:1.1rem;margin-bottom:14px">Results by Category</h2>
+      <div class="results-grid" id="results-grid">
+        <div class="skeleton" style="height:90px;border-radius:var(--r16)"></div>
+        <div class="skeleton" style="height:90px;border-radius:var(--r16)"></div>
+        <div class="skeleton" style="height:90px;border-radius:var(--r16)"></div>
+      </div>
+    </div>
+
+    <div>
+      <h2 style="font-family:var(--serif);font-size:1.1rem;margin-bottom:14px">Assessment History</h2>
+      <table class="history-table">
+        <thead>
+          <tr><th>Category</th><th>Level</th><th>Score</th><th>Hints Used</th><th>Listen Used</th><th>Time</th><th>Date</th></tr>
+        </thead>
+        <tbody id="history-tbody">
+          <tr><td colspan="7" style="text-align:center;padding:32px"><div class="spinner" style="margin:0 auto"></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/nav.js"></script>
+<script src="../js/admin.js"></script>
+<script>
+const catIcons   = {math:'📐',reading:'📖',money:'💰',social:'🤝',safety:'⚠️',time:'⏱️',decision:'🧠'};
+const levelLabels = {1:'Supported',2:'Developing',3:'Independent',4:'Advanced'};
+const levelColors = {1:'var(--amb)',2:'var(--teal)',3:'var(--sage)',4:'var(--s700)'};
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const ok = await AdminApp.init();
+  if (!ok) return;
+
+  const params  = new URLSearchParams(window.location.search);
+  const childId = params.get('id');
+  if (!childId) { window.location.href = 'students.html'; return; }
+
+  // Load child
+  const { data: child } = await RE.Children.get(childId);
+  if (!child) { window.location.href = 'students.html'; return; }
+
+  // Header
+  const initials = (child.first_name[0] + (child.last_name?.[0]||'')).toUpperCase();
+  document.getElementById('detail-header-wrap').innerHTML = `
+    <div class="detail-header">
+      <div class="detail-avatar">${initials}</div>
+      <div>
+        <div class="detail-name">${child.first_name} ${child.last_name||''}</div>
+        <div class="detail-meta">${child.grade_level||''}${child.has_iep?' · Has IEP':''}</div>
+      </div>
+    </div>
+  `;
+
+  // Results
+  const { data: results } = await RE.Results.getByChild(childId);
+  const grid = document.getElementById('results-grid');
+
+  if (!results || results.length === 0) {
+    grid.innerHTML = `<div style="grid-column:1/-1"><p class="sm">No results yet.</p></div>`;
+  } else {
+    // Latest per category
+    const latest = {};
+    results.forEach(r => { if (!latest[r.category]) latest[r.category] = r; });
+    grid.innerHTML = Object.values(latest).map(r => `
+      <div class="result-card">
+        <div class="result-card-cat">${catIcons[r.category]||''} ${r.category}</div>
+        <div class="result-card-level" style="color:${levelColors[r.level_reached]||'var(--s900)'}">L${r.level_reached}</div>
+        <div class="result-card-label">${levelLabels[r.level_reached]}</div>
+        <div class="result-card-score">${r.score_percent ? Math.round(r.score_percent)+'%' : ''}</div>
+      </div>
+    `).join('');
+  }
+
+  // History table
+  const tbody = document.getElementById('history-tbody');
+  if (!results || results.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:28px;color:var(--s400)">No assessments completed yet.</td></tr>`;
+  } else {
+    tbody.innerHTML = results.map(r => {
+      const mins = r.time_taken_seconds ? Math.round(r.time_taken_seconds/60)+'m' : '—';
+      const date = new Date(r.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+      return `
+        <tr>
+          <td>${catIcons[r.category]||''} ${r.category}</td>
+          <td><strong>L${r.level_reached}</strong> ${levelLabels[r.level_reached]}</td>
+          <td>${r.score_percent ? Math.round(r.score_percent)+'%' : '—'}</td>
+          <td>${r.hints_used||0}</td>
+          <td>${r.listen_used||0}</td>
+          <td>${mins}</td>
+          <td>${date}</td>
+        </tr>
+      `;
+    }).join('');
+  }
+});
+</script>
+</body>
+</html>

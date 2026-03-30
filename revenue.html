@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revenue — Ripa Elevate Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/nav.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+.admin-table{width:100%;border-collapse:collapse;background:var(--white);border-radius:var(--r16);overflow:hidden;border:1px solid var(--s200);}
+.admin-table th{background:var(--s50);font-size:.67rem;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:var(--s400);padding:11px 16px;border-bottom:1px solid var(--s200);text-align:left;}
+.admin-table td{font-size:.82rem;color:var(--s600);padding:13px 16px;border-bottom:1px solid var(--s100);}
+.admin-table tr:last-child td{border-bottom:none;}
+</style>
+</head>
+<body>
+<nav id="nav" class="solid dark-nav">
+  <a href="dashboard.html" class="nav-logo" style="color:var(--white)">
+    <div class="nav-logo-mark"><svg viewBox="0 0 20 20" fill="none" width="20" height="20"><path d="M4 10C4 6.686 6.686 4 10 4" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M16 10C16 13.314 13.314 16 10 16" stroke="#7c9a7e" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="10" r="2" fill="white"/></svg></div>
+    Ripa <em style="color:var(--sage)">Elevate</em>
+  </a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="chip chip-sage" style="font-size:.68rem">Admin</span>
+    <a href="dashboard.html" class="nav-link" style="color:var(--s400)">Dashboard</a>
+    <a href="students.html"  class="nav-link" style="color:var(--s400)">Students</a>
+    <a href="leads.html"     class="nav-link" style="color:var(--s400)">Leads</a>
+    <button class="btn btn-sm" style="background:var(--s800);color:var(--s400);border:1px solid var(--s700)" onclick="AuthManager.signOut()">Sign Out</button>
+  </div>
+</nav>
+<div class="page-body">
+  <div class="wrap" style="padding-top:32px;padding-bottom:96px">
+    <div class="flex-between mb-24">
+      <div>
+        <h1 class="dis" style="font-size:1.8rem">Revenue &amp; Payments</h1>
+        <p class="sm mt-4">All payment records from Supabase. Connect Stripe webhooks to keep this updated in real time.</p>
+      </div>
+    </div>
+    <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:28px">
+      <div class="kpi-card"><div class="kpi-label">Active Subscribers</div><div class="kpi-value" id="stat-subs">—</div></div>
+      <div class="kpi-card"><div class="kpi-label">Total Students</div><div class="kpi-value" id="stat-students">—</div></div>
+      <div class="kpi-card"><div class="kpi-label">On Trial</div><div class="kpi-value" id="stat-trial">—</div></div>
+    </div>
+    <table class="admin-table">
+      <thead>
+        <tr><th>Name</th><th>Email</th><th>Plan</th><th>Amount</th><th>Status</th></tr>
+      </thead>
+      <tbody id="revenue-tbody">
+        <tr><td colspan="5" style="text-align:center;padding:40px"><div class="spinner" style="margin:0 auto"></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/nav.js"></script>
+<script src="../js/admin.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const ok = await AdminApp.init();
+  if (!ok) return;
+  const stats = await AdminApp.loadStats();
+  await AdminApp.loadRevenue();
+  // trial count
+  const { count } = await RE.db.from('payments').select('id',{count:'exact',head:true}).eq('plan','trial');
+  const trialEl = document.getElementById('stat-trial');
+  if (trialEl) trialEl.textContent = count || 0;
+});
+</script>
+</body>
+</html>

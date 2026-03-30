@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Question Manager — Ripa Elevate Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/nav.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+.qm-layout{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}
+.qm-form{background:var(--white);border:1px solid var(--s200);border-radius:var(--r20);padding:28px;position:sticky;top:88px;}
+.qm-form h2{font-family:var(--serif);font-size:1.2rem;margin-bottom:6px;}
+.qm-preview{background:var(--white);border:1px solid var(--s200);border-radius:var(--r20);padding:28px;}
+.qm-preview h2{font-family:var(--serif);font-size:1.2rem;margin-bottom:16px;}
+.opt-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.correct-radio{display:flex;align-items:center;gap:6px;font-size:.8rem;cursor:pointer;}
+.correct-radio input{accent-color:var(--sage);}
+.q-count-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px;}
+.q-count-card{background:var(--s50);border:1px solid var(--s200);border-radius:var(--r12);padding:12px;text-align:center;}
+.q-count-num{font-family:var(--serif);font-size:1.4rem;color:var(--s900);}
+.q-count-lbl{font-size:.68rem;color:var(--s400);margin-top:2px;}
+/* Live preview card */
+.prev-card{background:var(--s50);border:1px solid var(--s200);border-radius:var(--r16);padding:20px;}
+.prev-q{font-family:var(--serif);font-size:.95rem;color:var(--s900);line-height:1.65;margin-bottom:14px;}
+.prev-opts{display:flex;flex-direction:column;gap:7px;}
+.prev-opt{display:flex;align-items:center;gap:9px;padding:7px 10px;border:1px solid var(--s200);border-radius:8px;font-size:.8rem;color:var(--s600);}
+.prev-opt.correct{border-color:var(--sage);background:var(--sage-m);font-weight:500;}
+.prev-letter{width:20px;height:20px;border-radius:50%;border:1px solid var(--s300);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:600;flex-shrink:0;color:var(--s400);}
+.prev-opt.correct .prev-letter{background:var(--sage);border-color:var(--sage);color:var(--white);}
+.prev-hint{background:var(--amb-l);border-radius:8px;padding:8px 12px;font-size:.75rem;color:var(--s600);margin-top:10px;border-left:2px solid var(--amb);}
+@media(max-width:960px){.qm-layout{grid-template-columns:1fr;}.qm-form{position:static;}}
+</style>
+</head>
+<body>
+<nav id="nav" class="solid dark-nav">
+  <a href="dashboard.html" class="nav-logo" style="color:var(--white)">
+    <div class="nav-logo-mark"><svg viewBox="0 0 20 20" fill="none" width="20" height="20"><path d="M4 10C4 6.686 6.686 4 10 4" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M16 10C16 13.314 13.314 16 10 16" stroke="#7c9a7e" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="10" r="2" fill="white"/></svg></div>
+    Ripa <em style="color:var(--sage)">Elevate</em>
+  </a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="chip chip-sage" style="font-size:.68rem">Admin</span>
+    <a href="dashboard.html" class="nav-link" style="color:var(--s400)">Dashboard</a>
+    <a href="students.html"  class="nav-link" style="color:var(--s400)">Students</a>
+    <button class="btn btn-sm" style="background:var(--s800);color:var(--s400);border:1px solid var(--s700)" onclick="AuthManager.signOut()">Sign Out</button>
+  </div>
+</nav>
+
+<div class="page-body">
+  <div class="wrap" style="padding-top:32px;padding-bottom:96px">
+
+    <div style="margin-bottom:24px">
+      <h1 class="dis" style="font-size:1.8rem">Question Manager</h1>
+      <p class="sm mt-4">Browse existing questions and preview the JSON for new ones. To add a question permanently, copy the generated JSON and paste it into <code>data/questions.json</code>.</p>
+    </div>
+
+    <!-- Bank stats -->
+    <div class="q-count-grid" id="q-count-grid">
+      <div class="skeleton" style="height:60px;border-radius:var(--r12)"></div>
+      <div class="skeleton" style="height:60px;border-radius:var(--r12)"></div>
+      <div class="skeleton" style="height:60px;border-radius:var(--r12)"></div>
+      <div class="skeleton" style="height:60px;border-radius:var(--r12)"></div>
+    </div>
+
+    <div class="qm-layout">
+
+      <!-- Add question form -->
+      <div class="qm-form">
+        <h2>Build a Question</h2>
+        <p class="sm mt-4 mb-16">Fill in the fields to preview and generate the JSON entry.</p>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Category <span class="req">*</span></label>
+            <select id="q-cat" class="form-select" onchange="updatePreview()">
+              <option value="">Select…</option>
+              <option value="math">Math</option>
+              <option value="reading">Reading</option>
+              <option value="money">Money</option>
+              <option value="social">Social</option>
+              <option value="safety">Safety</option>
+              <option value="time">Time</option>
+              <option value="decision">Decision</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Level <span class="req">*</span></label>
+            <select id="q-level" class="form-select" onchange="updatePreview()">
+              <option value="">Select…</option>
+              <option value="1">Level 1 — Supported</option>
+              <option value="2">Level 2 — Developing</option>
+              <option value="3">Level 3 — Independent</option>
+              <option value="4">Level 4 — Advanced</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Question Text <span class="req">*</span></label>
+          <textarea id="q-text" class="form-textarea" rows="3" placeholder="Use <mark>bold</mark> for key terms. Use <em>italics</em> for quotes." oninput="updatePreview()"></textarea>
+          <div class="form-hint">HTML allowed: &lt;mark&gt; for highlight, &lt;em&gt; for italic</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Answer Options <span class="req">*</span></label>
+          <div class="opt-row">
+            <input type="text" id="q-opt0" class="form-input" placeholder="A" oninput="updatePreview()">
+            <input type="text" id="q-opt1" class="form-input" placeholder="B" oninput="updatePreview()">
+            <input type="text" id="q-opt2" class="form-input" placeholder="C" oninput="updatePreview()">
+            <input type="text" id="q-opt3" class="form-input" placeholder="D" oninput="updatePreview()">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Correct Answer</label>
+          <div style="display:flex;gap:16px;margin-top:6px">
+            <label class="correct-radio"><input type="radio" name="ans" value="0" onchange="updatePreview()"> A</label>
+            <label class="correct-radio"><input type="radio" name="ans" value="1" onchange="updatePreview()"> B</label>
+            <label class="correct-radio"><input type="radio" name="ans" value="2" onchange="updatePreview()"> C</label>
+            <label class="correct-radio"><input type="radio" name="ans" value="3" onchange="updatePreview()"> D</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Hint (optional)</label>
+          <input type="text" id="q-hint" class="form-input" placeholder="A short clue that doesn't give away the answer" oninput="updatePreview()">
+        </div>
+
+        <button class="btn btn-dark btn-full" onclick="generateJSON()">Generate JSON Entry</button>
+
+        <div id="json-output" class="hidden" style="margin-top:16px">
+          <label class="form-label">Copy this into questions.json</label>
+          <textarea id="json-text" class="form-textarea" rows="8" style="font-family:monospace;font-size:.75rem;background:var(--s900);color:#4ade80;border-color:var(--s700)" readonly></textarea>
+          <button class="btn btn-outline btn-sm mt-8 btn-full" onclick="copyJSON()">Copy to Clipboard</button>
+        </div>
+      </div>
+
+      <!-- Live preview + bank browser -->
+      <div>
+        <div class="qm-preview" style="margin-bottom:16px">
+          <h2>Live Preview</h2>
+          <div id="live-preview">
+            <p class="sm" style="color:var(--s400)">Fill in the form to see a preview here.</p>
+          </div>
+        </div>
+
+        <div class="qm-preview">
+          <h2>Browse Bank</h2>
+          <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+            <select id="browse-cat" class="form-select" style="flex:1" onchange="browseQuestions()">
+              <option value="math">Math</option>
+              <option value="reading">Reading</option>
+              <option value="money">Money</option>
+              <option value="social">Social</option>
+              <option value="safety">Safety</option>
+              <option value="time">Time</option>
+              <option value="decision">Decision</option>
+            </select>
+            <select id="browse-level" class="form-select" style="width:80px" onchange="browseQuestions()">
+              <option value="1">L1</option>
+              <option value="2">L2</option>
+              <option value="3">L3</option>
+              <option value="4">L4</option>
+            </select>
+          </div>
+          <div id="browse-list" style="display:flex;flex-direction:column;gap:8px">
+            <div class="skeleton" style="height:80px;border-radius:var(--r12)"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/nav.js"></script>
+<script src="../js/admin.js"></script>
+<script>
+let qData = null;
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const ok = await AdminApp.init();
+  if (!ok) return;
+
+  // Load question bank
+  const res = await fetch('../data/questions.json');
+  qData = await res.json();
+
+  // Stats
+  const cats = Object.keys(qData.categories);
+  let total = 0;
+  const grid = document.getElementById('q-count-grid');
+  const counts = cats.map(cat => {
+    const c = qData.categories[cat];
+    const n = Object.values(c.levels).reduce((s,qs) => s + qs.length, 0);
+    total += n;
+    return { cat, label: c.label, n };
+  });
+  grid.innerHTML = `
+    <div class="q-count-card"><div class="q-count-num">${total}</div><div class="q-count-lbl">Total Questions</div></div>
+    ${counts.map(c => `<div class="q-count-card"><div class="q-count-num">${c.n}</div><div class="q-count-lbl">${c.label}</div></div>`).join('')}
+  `;
+
+  browseQuestions();
+});
+
+function updatePreview() {
+  const q    = document.getElementById('q-text').value;
+  const opts = [0,1,2,3].map(i => document.getElementById(`q-opt${i}`).value);
+  const ans  = document.querySelector('input[name="ans"]:checked')?.value;
+  const hint = document.getElementById('q-hint').value;
+
+  if (!q && !opts[0]) {
+    document.getElementById('live-preview').innerHTML = `<p class="sm" style="color:var(--s400)">Fill in the form to see a preview here.</p>`;
+    return;
+  }
+
+  document.getElementById('live-preview').innerHTML = `
+    <div class="prev-card">
+      <p class="prev-q">${q || '<em style="color:var(--s400)">Question text…</em>'}</p>
+      <div class="prev-opts">
+        ${opts.map((o, i) => `
+          <div class="prev-opt ${ans == i ? 'correct' : ''}">
+            <div class="prev-letter">${String.fromCharCode(65+i)}</div>
+            ${o || `<em style="color:var(--s300)">Option ${String.fromCharCode(65+i)}</em>`}
+          </div>
+        `).join('')}
+      </div>
+      ${hint ? `<div class="prev-hint">💡 ${hint}</div>` : ''}
+    </div>
+  `;
+}
+
+function generateJSON() {
+  const cat   = document.getElementById('q-cat').value;
+  const level = document.getElementById('q-level').value;
+  const q     = document.getElementById('q-text').value.trim();
+  const opts  = [0,1,2,3].map(i => document.getElementById(`q-opt${i}`).value.trim());
+  const ans   = document.querySelector('input[name="ans"]:checked')?.value;
+  const hint  = document.getElementById('q-hint').value.trim();
+
+  if (!cat || !level || !q || opts.some(o=>!o) || ans === undefined) {
+    showToast('Fill in all required fields first.', 'error');
+    return;
+  }
+
+  // Generate unique id
+  const existing = qData?.categories?.[cat]?.levels?.[level] || [];
+  const id = `${cat[0]}${level}_${String(existing.length + 1).padStart(2,'0')}_new`;
+
+  const entry = { id, q, opts, ans: parseInt(ans), hint: hint || undefined };
+  const json  = JSON.stringify(entry, null, 2);
+
+  document.getElementById('json-output').classList.remove('hidden');
+  document.getElementById('json-text').value = json;
+}
+
+function copyJSON() {
+  const text = document.getElementById('json-text').value;
+  navigator.clipboard.writeText(text).then(() => showToast('Copied!', 'success'));
+}
+
+function browseQuestions() {
+  if (!qData) return;
+  const cat   = document.getElementById('browse-cat').value;
+  const level = document.getElementById('browse-level').value;
+  const qs    = qData?.categories?.[cat]?.levels?.[level] || [];
+  const list  = document.getElementById('browse-list');
+
+  if (qs.length === 0) {
+    list.innerHTML = `<p class="sm" style="color:var(--s400)">No questions in this category/level yet.</p>`;
+    return;
+  }
+
+  list.innerHTML = qs.map(q => `
+    <div style="background:var(--s50);border:1px solid var(--s200);border-radius:var(--r12);padding:12px 14px">
+      <p style="font-size:.8rem;color:var(--s700);line-height:1.6">${q.q}</p>
+      <div style="font-size:.68rem;color:var(--s400);margin-top:5px">ID: ${q.id} · ${q.opts.length} options · ${q.hint?'Has hint':'No hint'}</div>
+    </div>
+  `).join('');
+}
+</script>
+</body>
+</html>
