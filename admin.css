@@ -1,0 +1,26 @@
+/* ═══════════════════════════════════════════
+   RIPA ELEVATE — ADMIN CSS
+═══════════════════════════════════════════ */
+.admin-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - var(--nh));}
+.admin-sidebar{background:var(--s50);border-right:1px solid var(--s200);padding:24px 12px;}
+.admin-sidebar-inner{position:sticky;top:calc(var(--nh) + 20px);}
+.admin-main{padding:32px 40px 80px;overflow:hidden;}
+.admin-topbar-inner{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;}
+.admin-date{font-size:.8rem;color:var(--s400);}
+.admin-card{background:var(--white);border:1px solid var(--s200);border-radius:var(--r16);padding:22px;margin-bottom:16px;}
+.admin-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+.admin-card-title{font-size:.93rem;font-weight:600;color:var(--s800);}
+.admin-two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.bar-chart{display:flex;align-items:flex-end;gap:8px;height:100px;padding-top:8px;}
+.bar-col{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;}
+.bar{background:var(--sage);border-radius:4px 4px 0 0;width:100%;min-height:4px;transition:height .5s var(--ease);}
+.bar-val{font-size:.68rem;color:var(--s500);font-weight:600;}
+.bar-label{font-size:.6rem;color:var(--s400);}
+.lead-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--s100);}
+.lead-row:last-child{border-bottom:none;}
+@media(max-width:960px){
+  .admin-layout{grid-template-columns:1fr;}
+  .admin-sidebar{display:none;}
+  .admin-main{padding:20px;}
+  .admin-two-col{grid-template-columns:1fr;}
+}

@@ -1,0 +1,26 @@
+/* ═══════════════════════════════════════════
+   RIPA ELEVATE — DASHBOARD CSS
+═══════════════════════════════════════════ */
+.dash-page{padding:40px 0 96px;}
+.pdash-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:36px;padding-bottom:24px;border-bottom:1px solid var(--s200);}
+.children-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(480px,1fr));gap:20px;}
+.child-card{background:var(--white);border:1.5px solid var(--s200);border-radius:var(--r24);overflow:hidden;}
+.child-card-header{display:flex;align-items:center;gap:14px;padding:24px 24px 18px;}
+.child-avatar{width:44px;height:44px;border-radius:50%;background:var(--s900);color:var(--white);font-family:var(--serif);font-size:1.1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.child-info{flex:1;}
+.child-name{font-family:var(--serif);font-size:1.2rem;color:var(--s900);}
+.child-meta{display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;font-size:.75rem;color:var(--s400);}
+.child-card-actions{flex-shrink:0;}
+.child-cats{padding:0 24px 18px;}
+.child-cats-label{font-size:.64rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--s400);margin-bottom:10px;}
+.cat-pills{display:flex;gap:7px;flex-wrap:wrap;}
+.cat-pill{display:flex;align-items:center;gap:4px;padding:6px 11px;border-radius:var(--r-full);font-size:.75rem;font-weight:500;cursor:pointer;transition:all .15s;}
+.cat-done{background:var(--sage-m);color:var(--s700);cursor:default;}
+.cat-todo{background:var(--s100);color:var(--s400);border:1.5px dashed var(--s300);}
+.cat-todo:hover{background:var(--s200);color:var(--s700);}
+.cat-pill span{font-size:.65rem;font-weight:600;}
+.child-start-cta{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 24px;background:var(--s50);border-top:1px solid var(--s200);}
+.csc-text{display:flex;flex-direction:column;gap:2px;}
+.csc-text strong{font-size:.82rem;color:var(--s800);}
+.csc-text span{font-size:.74rem;color:var(--s400);}
+@media(max-width:960px){.children-grid{grid-template-columns:1fr;}}

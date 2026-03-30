@@ -1,0 +1,18 @@
+/* ═══════════════════════════════════════════
+   RIPA ELEVATE — EXAM CSS
+═══════════════════════════════════════════ */
+.exam-loading{min-height:calc(100vh - var(--nh));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;color:var(--s400);}
+.exam-page{min-height:calc(100vh - var(--nh));display:flex;align-items:center;justify-content:center;padding:24px 20px 60px;background:var(--s50);}
+.exam-container{width:100%;max-width:660px;}
+.exam-nav-center{display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--s500);}
+.exam-nav-cat{font-weight:600;color:var(--s700);}
+.exam-nav-sep{color:var(--s300);}
+.exam-encourage{text-align:center;font-size:.78rem;color:var(--s400);margin-top:18px;min-height:20px;transition:opacity .3s;}
+
+/* Completion screen */
+.exam-complete-page{min-height:calc(100vh - var(--nh));display:flex;align-items:center;justify-content:center;padding:40px 20px;}
+.complete-card{background:var(--white);border:1px solid var(--s200);border-radius:var(--r32);padding:52px 48px;max-width:520px;width:100%;text-align:center;box-shadow:var(--sh-xl);}
+.complete-icon{font-size:3.5rem;margin-bottom:20px;}
+.complete-title{font-family:var(--serif);font-size:2.2rem;color:var(--s900);margin-bottom:12px;}
+.complete-sub{font-size:.9rem;color:var(--s400);line-height:1.7;margin-bottom:32px;}
+.complete-actions{display:flex;flex-direction:column;gap:10px;}

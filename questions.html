@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Question Bank — Ripa Elevate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/nav.css">
+<link rel="stylesheet" href="css/components.css">
+<style>
+.qb-hero{padding:88px 0 48px;text-align:center;}
+.qb-hero h1.dis em{color:var(--sage);}
+.qb-hero .blg{max-width:560px;margin:16px auto 0;}
+
+.qb-filters{background:var(--white);border-bottom:1px solid var(--s200);padding:16px 0;position:sticky;top:68px;z-index:100;}
+.qb-filter-wrap{display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.qb-cats{display:flex;gap:6px;flex-wrap:wrap;flex:1;}
+.qb-cat-btn{padding:6px 14px;border-radius:var(--r-full);border:1.5px solid var(--s200);font-size:.78rem;font-weight:500;cursor:pointer;font-family:var(--sans);background:var(--white);color:var(--s600);transition:all .15s;white-space:nowrap;}
+.qb-cat-btn.active{background:var(--s900);border-color:var(--s900);color:var(--white);}
+.qb-lvl-wrap{display:flex;gap:6px;}
+.qb-lvl-btn{padding:5px 12px;border-radius:var(--r-full);border:1.5px solid var(--s200);font-size:.76rem;font-weight:600;cursor:pointer;font-family:var(--sans);background:var(--white);color:var(--s600);transition:all .15s;}
+.qb-lvl-btn.active{background:var(--sage);border-color:var(--sage);color:var(--white);}
+
+.qb-meta{display:flex;align-items:center;justify-content:space-between;padding:20px 0 12px;}
+.qb-count{font-size:.8rem;color:var(--s400);}
+
+.qb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding-bottom:96px;}
+.qb-card{background:var(--white);border:1px solid var(--s200);border-radius:var(--r20);padding:24px;}
+.qb-card-meta{display:flex;gap:7px;margin-bottom:14px;flex-wrap:wrap;}
+.qb-question{font-family:var(--serif);font-size:.95rem;line-height:1.65;color:var(--s900);margin-bottom:16px;}
+.qb-question mark{background:#fef9c3;border-radius:3px;padding:1px 4px;color:var(--s900);}
+.qb-question em{font-style:italic;color:var(--s600);}
+.qb-opts{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;}
+.qb-opt{display:flex;align-items:center;gap:9px;padding:7px 10px;border:1px solid var(--s200);border-radius:8px;font-size:.8rem;color:var(--s600);}
+.qb-opt.correct{border-color:var(--sage);background:var(--sage-m);color:var(--s800);font-weight:500;}
+.qb-letter{width:20px;height:20px;border-radius:50%;border:1px solid var(--s300);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:600;flex-shrink:0;color:var(--s400);}
+.qb-opt.correct .qb-letter{background:var(--sage);border-color:var(--sage);color:var(--white);}
+.qb-correct-mark{margin-left:auto;color:var(--sage);font-weight:700;font-size:.8rem;}
+.qb-hint{background:var(--amb-l);border-radius:8px;padding:9px 12px;font-size:.76rem;color:var(--s600);display:flex;gap:6px;border-left:3px solid var(--amb);}
+
+@media(max-width:960px){.qb-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.qb-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<nav id="nav">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-mark"><svg viewBox="0 0 20 20" fill="none" width="20" height="20"><path d="M4 10C4 6.686 6.686 4 10 4" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M16 10C16 13.314 13.314 16 10 16" stroke="#7c9a7e" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="10" r="2" fill="white"/></svg></div>
+    Ripa <em>Elevate</em>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html"        class="nav-link">Home</a></li>
+    <li><a href="how-it-works.html" class="nav-link">How It Works</a></li>
+    <li><a href="questions.html"    class="nav-link act">Question Bank</a></li>
+    <li><a href="for-parents.html"  class="nav-link">For Parents</a></li>
+    <li><a href="about.html"        class="nav-link">Our Story</a></li>
+  </ul>
+  <div class="nav-auth" id="nav-guest">
+    <a href="app/login.html"   class="nav-link">Sign In</a>
+    <a href="for-parents.html" class="nav-cta">Get Started</a>
+  </div>
+  <button class="nav-burger" id="nav-burger"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html"     class="nav-link">Home</a>
+  <a href="questions.html" class="nav-link">Question Bank</a>
+  <a href="for-parents.html" class="nav-cta">Get Started</a>
+</div>
+
+<div class="page-body">
+
+<section class="qb-hero">
+  <div class="wrap">
+    <div class="lbl lbl-teal">Question Bank</div>
+    <h1 class="dis mt-10">See the questions <em>before</em> you assess</h1>
+    <p class="blg">Browse sample questions from every category and level. Correct answers shown so parents can prepare their child or review together after the assessment.</p>
+  </div>
+</section>
+
+<div class="qb-filters">
+  <div class="wrap">
+    <div class="qb-filter-wrap">
+      <div class="qb-cats" id="qb-categories"><!-- built by JS --></div>
+      <div class="qb-lvl-wrap">
+        <button class="qb-lvl-btn active" data-lvl="all" onclick="QuestionsBrowser.setLevel('all')">All</button>
+        <button class="qb-lvl-btn" data-lvl="1" onclick="QuestionsBrowser.setLevel('1')">L1</button>
+        <button class="qb-lvl-btn" data-lvl="2" onclick="QuestionsBrowser.setLevel('2')">L2</button>
+        <button class="qb-lvl-btn" data-lvl="3" onclick="QuestionsBrowser.setLevel('3')">L3</button>
+        <button class="qb-lvl-btn" data-lvl="4" onclick="QuestionsBrowser.setLevel('4')">L4</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="qb-meta">
+    <span class="qb-count" id="qb-count">Loading…</span>
+    <a href="app/signup.html" class="btn btn-dark btn-sm">Start an Assessment →</a>
+  </div>
+  <div class="qb-grid" id="qb-grid">
+    <div style="grid-column:1/-1;padding:48px 0;text-align:center"><div class="spinner" style="margin:0 auto;width:28px;height:28px"></div></div>
+  </div>
+</div>
+
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-bottom" style="padding:32px 0 0">
+      <span>© 2025 Ripa Elevate</span>
+      <span><a href="for-parents.html">For Parents</a> · <a href="contact.html">Contact</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/questions-browser.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  AuthManager.init();
+  QuestionsBrowser.load();
+});
+</script>
+</body>
+</html>
