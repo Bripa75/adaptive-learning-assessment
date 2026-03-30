@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assessment Complete — Ripa Elevate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/nav.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+.complete-wrap{min-height:calc(100vh - 68px);display:flex;align-items:center;justify-content:center;padding:40px 20px;}
+.complete-box{max-width:480px;width:100%;text-align:center;}
+.complete-icon{font-size:4rem;margin-bottom:20px;animation:fadeUp .5s var(--ease) both;}
+.complete-box h1{font-family:var(--serif);font-size:2.2rem;margin-bottom:12px;}
+.complete-box p{font-size:.92rem;color:var(--s500);line-height:1.75;margin-bottom:28px;}
+.complete-actions{display:flex;flex-direction:column;gap:10px;}
+.calculating{padding:24px;background:var(--s50);border:1px solid var(--s200);border-radius:var(--r16);margin-bottom:24px;}
+.calc-label{font-size:.8rem;color:var(--s500);margin-top:8px;}
+</style>
+</head>
+<body>
+<nav id="nav" class="solid">
+  <a href="../index.html" class="nav-logo">
+    <div class="nav-logo-mark"><svg viewBox="0 0 20 20" fill="none" width="20" height="20"><path d="M4 10C4 6.686 6.686 4 10 4" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M16 10C16 13.314 13.314 16 10 16" stroke="#7c9a7e" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="10" r="2" fill="white"/></svg></div>
+    Ripa <em>Elevate</em>
+  </a>
+</nav>
+
+<div class="page-body">
+  <div class="complete-wrap">
+    <div class="complete-box anim-up">
+
+      <!-- Calculating state -->
+      <div id="calculating-state">
+        <div class="calculating">
+          <div class="spinner" style="margin:0 auto;width:32px;height:32px"></div>
+          <div class="calc-label">Calculating your results…</div>
+        </div>
+        <p>Hang tight — we're analyzing every answer and putting together your full report.</p>
+      </div>
+
+      <!-- Done state (hidden until redirect) -->
+      <div id="done-state" class="hidden">
+        <div class="complete-icon">🎉</div>
+        <h1>All done!</h1>
+        <p id="done-message">Great work finishing this assessment. Your report is ready.</p>
+        <div class="complete-actions">
+          <a href="#" id="view-report-btn" class="btn btn-dark btn-full">View Your Report</a>
+          <a href="parent-dashboard.html" class="btn btn-outline btn-full">Back to Dashboard</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/nav.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  await AuthManager.requireAuth('../app/login.html');
+
+  // Get result ID from URL params
+  const params   = new URLSearchParams(window.location.search);
+  const resultId = params.get('result');
+
+  if (resultId) {
+    document.getElementById('calculating-state').classList.add('hidden');
+    document.getElementById('done-state').classList.remove('hidden');
+    document.getElementById('view-report-btn').href = `report.html?result=${resultId}`;
+  } else {
+    // Fallback — redirect to dashboard after 3s
+    setTimeout(() => {
+      window.location.href = 'parent-dashboard.html';
+    }, 3000);
+  }
+});
+</script>
+</body>
+</html>

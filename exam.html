@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assessment — Ripa Elevate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/nav.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/exam.css">
+</head>
+<body>
+
+<!-- Minimal nav during exam -->
+<nav id="nav" class="solid">
+  <a href="../index.html" class="nav-logo">
+    <div class="nav-logo-mark"><svg viewBox="0 0 20 20" fill="none" width="20" height="20"><path d="M4 10C4 6.686 6.686 4 10 4" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M16 10C16 13.314 13.314 16 10 16" stroke="#7c9a7e" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="10" r="2" fill="white"/></svg></div>
+    Ripa <em>Elevate</em>
+  </a>
+  <div class="exam-nav-center">
+    <span class="exam-nav-cat" id="exam-nav-cat"></span>
+    <span class="exam-nav-sep">·</span>
+    <span class="exam-nav-counter" id="exam-counter">Question 1</span>
+  </div>
+  <div style="width:120px"></div><!-- spacer for centering -->
+</nav>
+
+<!-- LOADING -->
+<div id="exam-loading" class="exam-loading page-body">
+  <div class="spinner" style="width:28px;height:28px;border-width:3px"></div>
+  <p>Loading your assessment…</p>
+</div>
+
+<!-- EXAM BODY -->
+<div id="exam-body" class="exam-page page-body hidden">
+  <div class="exam-container">
+
+    <!-- Question frame -->
+    <div class="qframe">
+      <!-- Top bar -->
+      <div class="qf-top">
+        <div class="qf-dots">
+          <div class="qf-dot" style="background:#f87171"></div>
+          <div class="qf-dot" style="background:#fbbf24"></div>
+          <div class="qf-dot" style="background:#4ade80"></div>
+        </div>
+        <div class="qf-prog">
+          <div class="qf-fill" id="exam-progress-fill" style="width:0%"></div>
+        </div>
+        <span class="qf-meta" id="exam-progress-label">1 / 10</span>
+      </div>
+
+      <!-- Question body -->
+      <div class="qf-body">
+        <span class="qf-cat" id="exam-cat-label"></span>
+
+        <!-- Hint panel -->
+        <div class="hint-panel" id="hint-panel">
+          <div class="hint-title">💡 Hint</div>
+          <div class="hint-text"></div>
+        </div>
+
+        <p class="qf-q" id="question-text">Loading question…</p>
+
+        <div class="qf-opts" id="question-options">
+          <!-- Populated by exam-engine.js -->
+        </div>
+      </div>
+
+      <!-- Footer toolbar -->
+      <div class="qf-footer">
+        <button class="qf-tool" id="btn-listen"
+          onclick="ExamEngine.toggleSpeech()">
+          <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+          Listen
+        </button>
+        <button class="qf-tool" id="btn-hint"
+          onclick="ExamEngine.toggleHint()">
+          <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          Hint
+        </button>
+        <div class="qf-spacer"></div>
+        <button class="qf-submit" id="btn-submit"
+          onclick="ExamEngine.submitAnswer()" disabled>
+          Select an answer
+        </button>
+      </div>
+    </div>
+
+    <!-- Encouragement line -->
+    <div class="exam-encourage" id="exam-encourage">Take your time — there's no clock. 🙂</div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/nav.js"></script>
+<script src="../js/exam-engine.js"></script>
+<script>
+const CAT_LABELS = {
+  math:'Mathematics', reading:'Reading', money:'Financial Literacy',
+  social:'Social Reasoning', safety:'Safety Awareness',
+  time:'Time & Planning', decision:'Decision-Making'
+};
+const ENCOURAGEMENTS = [
+  'Take your time — there's no clock. 🙂',
+  'You're doing great. Keep going!',
+  'There are no wrong tries — just keep thinking.',
+  'Use the Hint button if you need a nudge.',
+  'You can listen to the question using the Listen button.',
+  'Almost halfway there — great work!',
+  'You can do this. Take a breath and read carefully.',
+  'Every question is a chance to show what you know.',
+];
+
+document.addEventListener('DOMContentLoaded', async () => {
+  await AuthManager.requireAuth();
+
+  const params       = new URLSearchParams(window.location.search);
+  const assessmentId = params.get('id');
+  const category     = params.get('cat');
+  const level        = parseInt(params.get('level'), 10);
+  const childId      = params.get('child');
+
+  if (!assessmentId || !category || !level || !childId) {
+    window.location.href = 'parent-dashboard.html';
+    return;
+  }
+
+  // Update nav labels
+  document.getElementById('exam-nav-cat').textContent = CAT_LABELS[category] || category;
+
+  // Load questions from JSON
+  const resp = await fetch('../data/questions.json');
+  const data = await resp.json();
+  const catData = data.categories[category];
+  if (!catData) { window.location.href = 'parent-dashboard.html'; return; }
+
+  const questions = catData.levels[String(level)] || [];
+  if (questions.length === 0) { window.location.href = 'parent-dashboard.html'; return; }
+
+  // Update category label in question frame
+  document.getElementById('exam-cat-label').textContent = CAT_LABELS[category];
+
+  // Show exam
+  document.getElementById('exam-loading').classList.add('hidden');
+  document.getElementById('exam-body').classList.remove('hidden');
+
+  // Set progress label format
+  // Patch counter to show X / total
+  const origUpdate = ExamEngine.updateProgress.bind(ExamEngine);
+  ExamEngine.updateProgress = function() {
+    const total = this.questions.length;
+    const curr  = this.currentIndex + 1;
+    const pct   = Math.round((this.currentIndex / total) * 100);
+    const fill  = document.getElementById('exam-progress-fill');
+    if (fill) fill.style.width = pct + '%';
+    const counter = document.getElementById('exam-counter');
+    if (counter) counter.textContent = `Question ${curr} of ${total}`;
+    const label = document.getElementById('exam-progress-label');
+    if (label) label.textContent = `${curr} / ${total}`;
+    // Rotate encouragement
+    const enc = document.getElementById('exam-encourage');
+    if (enc && this.currentIndex > 0) {
+      enc.textContent = ENCOURAGEMENTS[this.currentIndex % ENCOURAGEMENTS.length];
+    }
+  };
+
+  // Boot the engine
+  await ExamEngine.init({
+    assessmentId,
+    childId,
+    parentId: AuthManager.currentUser.id,
+    category,
+    level,
+    questions
+  });
+});
+</script>
+</body>
+</html>

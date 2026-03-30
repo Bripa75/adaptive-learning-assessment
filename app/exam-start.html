@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Start Assessment — Ripa Elevate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/nav.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+.exam-start-wrap{padding:48px 0 96px;}
+.step{display:none;}.step.active{display:block;}
+.step-indicator{display:flex;align-items:center;gap:8px;margin-bottom:36px;}
+.si-dot{width:8px;height:8px;border-radius:50%;background:var(--s200);}
+.si-dot.done{background:var(--sage);}
+.si-dot.curr{background:var(--s900);}
+.si-line{flex:1;height:1px;background:var(--s200);}
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.cat-card{border:1.5px solid var(--s200);border-radius:var(--r16);padding:22px;cursor:pointer;transition:all .15s;background:var(--white);}
+.cat-card:hover{border-color:var(--sage);background:var(--sage-m);}
+.cat-card.selected{border-color:var(--sage);background:var(--sage-m);box-shadow:0 0 0 3px rgba(124,154,126,.12);}
+.cat-card.already-done{opacity:.55;pointer-events:none;}
+.cc-icon{font-size:1.8rem;margin-bottom:10px;}
+.cc-name{font-weight:600;font-size:.9rem;color:var(--s800);margin-bottom:4px;}
+.cc-desc{font-size:.75rem;color:var(--s400);line-height:1.55;}
+.cc-done-tag{font-size:.68rem;color:var(--sage);font-weight:500;margin-top:8px;}
+.level-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.level-card{border:1.5px solid var(--s200);border-radius:var(--r12);padding:20px 14px;cursor:pointer;background:var(--white);transition:all .15s;text-align:center;}
+.level-card:hover{border-color:var(--s400);}
+.level-card.selected{border-color:var(--sage);background:var(--sage-m);}
+.lc-n{font-family:var(--serif);font-size:2.2rem;color:var(--s200);line-height:1;margin-bottom:8px;}
+.lc-name{font-weight:600;font-size:.84rem;color:var(--s800);margin-bottom:5px;}
+.lc-desc{font-size:.72rem;color:var(--s400);line-height:1.5;}
+.lc-gr{font-size:.66rem;color:var(--s300);margin-top:10px;padding-top:10px;border-top:1px solid var(--s200);}
+.step-actions{display:flex;gap:12px;margin-top:32px;}
+</style>
+</head>
+<body>
+
+<nav id="nav" class="solid">
+  <a href="../index.html" class="nav-logo">
+    <div class="nav-logo-mark"><svg viewBox="0 0 20 20" fill="none" width="20" height="20"><path d="M4 10C4 6.686 6.686 4 10 4" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M16 10C16 13.314 13.314 16 10 16" stroke="#7c9a7e" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="10" r="2" fill="white"/></svg></div>
+    Ripa <em>Elevate</em>
+  </a>
+  <ul class="nav-links">
+    <li><a href="parent-dashboard.html" class="nav-link">← Dashboard</a></li>
+  </ul>
+  <div class="nav-avatar" id="nav-avatar" onclick="AuthManager.signOut()">P</div>
+</nav>
+
+<div class="exam-start-wrap page-body">
+  <div class="wrap-sm">
+
+    <!-- Step indicator -->
+    <div class="step-indicator">
+      <div class="si-dot" id="si-1"></div>
+      <div class="si-line"></div>
+      <div class="si-dot" id="si-2"></div>
+      <div class="si-line"></div>
+      <div class="si-dot" id="si-3"></div>
+    </div>
+
+    <!-- STEP 1: Choose category -->
+    <div class="step active" id="step-1">
+      <div class="lbl lbl-sage mb-8">Step 1 of 3</div>
+      <h2 class="dis mb-8">Choose a category</h2>
+      <p class="bod mb-32">Select the skill area to assess. Categories your child has already completed are shown below — they can be retaken after 30 days.</p>
+
+      <div class="cat-grid" id="cat-grid">
+        <!-- Populated by JS -->
+      </div>
+
+      <div class="step-actions">
+        <a href="parent-dashboard.html" class="btn btn-outline">← Back to Dashboard</a>
+        <button class="btn btn-dark" id="btn-next-1" onclick="goStep2()" disabled>Next: Choose Level →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Choose level -->
+    <div class="step" id="step-2">
+      <div class="lbl lbl-sage mb-8">Step 2 of 3</div>
+      <h2 class="dis mb-8">Choose a starting level</h2>
+      <p class="bod mb-8">Select the level that best describes your child right now. This is not a judgment — it helps the exam start at the right place. The platform will adapt based on performance.</p>
+      <div class="alert alert-info mb-24" style="font-size:.82rem">💡 <strong>Not sure?</strong> Start at Level 2 (Developing). The platform will adjust automatically.</div>
+
+      <div class="level-grid">
+        <div class="level-card" id="lc-1" onclick="selectLevel(1)">
+          <div class="lc-n">01</div>
+          <div class="lc-name">Supported</div>
+          <div class="lc-desc">Needs guidance to work through most problems</div>
+          <div class="lc-gr">Gr. 3–5 range</div>
+        </div>
+        <div class="level-card" id="lc-2" onclick="selectLevel(2)">
+          <div class="lc-n">02</div>
+          <div class="lc-name">Developing</div>
+          <div class="lc-desc">Can do many tasks with occasional help</div>
+          <div class="lc-gr">Gr. 5–7 range</div>
+        </div>
+        <div class="level-card" id="lc-3" onclick="selectLevel(3)">
+          <div class="lc-n">03</div>
+          <div class="lc-name">Independent</div>
+          <div class="lc-desc">Works through most problems without support</div>
+          <div class="lc-gr">Gr. 7–9 range</div>
+        </div>
+        <div class="level-card" id="lc-4" onclick="selectLevel(4)">
+          <div class="lc-n">04</div>
+          <div class="lc-name">Advanced</div>
+          <div class="lc-desc">Handles complex, multi-step problems independently</div>
+          <div class="lc-gr">Gr. 9+ range</div>
+        </div>
+      </div>
+
+      <div class="step-actions">
+        <button class="btn btn-outline" onclick="goStep1()">← Back</button>
+        <button class="btn btn-dark" id="btn-next-2" onclick="goStep3()" disabled>Next: Ready to Start →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Confirm & hand off to child -->
+    <div class="step" id="step-3">
+      <div class="lbl lbl-sage mb-8">Step 3 of 3</div>
+      <h2 class="dis mb-8">Ready to begin</h2>
+      <p class="bod mb-24">Review and hand the device to your child.</p>
+
+      <div class="card-flat" id="confirm-card" style="margin-bottom:24px">
+        <!-- Populated by JS -->
+      </div>
+
+      <div class="alert alert-info" style="font-size:.83rem;margin-bottom:24px">
+        <strong>For your child:</strong> The exam is untimed. You can use the Listen button to have questions read aloud, and the Hint button if you get stuck. Take your time.
+      </div>
+
+      <div class="step-actions">
+        <button class="btn btn-outline" onclick="goStep2()">← Change level</button>
+        <button class="btn btn-dark btn-lg" id="btn-start-exam" onclick="startExam()">
+          Start Assessment →
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/nav.js"></script>
+<script>
+const CATS = {
+  math:     { label:'Mathematics',        icon:'📐', desc:'Number operations, money math, problem solving' },
+  reading:  { label:'Reading',            icon:'📖', desc:'Comprehension, vocabulary, inference' },
+  money:    { label:'Financial Literacy', icon:'💰', desc:'Budgeting, purchases, real-world money skills' },
+  social:   { label:'Social Reasoning',   icon:'🤝', desc:'Reading situations, empathy, conflict resolution' },
+  safety:   { label:'Safety Awareness',   icon:'⚠️', desc:'Personal safety, online safety, risk recognition' },
+  time:     { label:'Time & Planning',    icon:'⏱️', desc:'Schedules, priorities, time management' },
+  decision: { label:'Decision-Making',    icon:'🧠', desc:'Weighing options, ethical reasoning, choices' }
+};
+
+let childId      = null;
+let selectedCat  = null;
+let selectedLevel = null;
+let completedCats = [];
+
+document.addEventListener('DOMContentLoaded', async () => {
+  await AuthManager.requireAuth();
+
+  const params = new URLSearchParams(window.location.search);
+  childId = params.get('child');
+  const presetCat = params.get('category');
+
+  if (!childId) { window.location.href = 'parent-dashboard.html'; return; }
+
+  // Load completed categories for this child
+  const { data: results } = await RE.Results.getByChild(childId);
+  completedCats = (results || []).map(r => r.category);
+
+  renderCatGrid(presetCat);
+
+  if (presetCat && CATS[presetCat]) {
+    selectCat(presetCat);
+  }
+
+  updateStepIndicator(1);
+});
+
+function renderCatGrid(presetCat) {
+  const grid = document.getElementById('cat-grid');
+  grid.innerHTML = Object.entries(CATS).map(([key, cat]) => {
+    const done = completedCats.includes(key);
+    return `<div class="cat-card ${done ? 'already-done' : ''}" id="cc-${key}" onclick="${done ? '' : `selectCat('${key}')`}">
+      <div class="cc-icon">${cat.icon}</div>
+      <div class="cc-name">${cat.label}</div>
+      <div class="cc-desc">${cat.desc}</div>
+      ${done ? '<div class="cc-done-tag">✓ Completed</div>' : ''}
+    </div>`;
+  }).join('');
+}
+
+function selectCat(key) {
+  selectedCat = key;
+  document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('selected'));
+  const el = document.getElementById(`cc-${key}`);
+  if (el) el.classList.add('selected');
+  document.getElementById('btn-next-1').disabled = false;
+}
+
+function selectLevel(n) {
+  selectedLevel = n;
+  document.querySelectorAll('.level-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById(`lc-${n}`).classList.add('selected');
+  document.getElementById('btn-next-2').disabled = false;
+}
+
+function goStep1() {
+  showStep(1); updateStepIndicator(1);
+}
+function goStep2() {
+  if (!selectedCat) return;
+  showStep(2); updateStepIndicator(2);
+}
+function goStep3() {
+  if (!selectedLevel) return;
+  showStep(3); updateStepIndicator(3);
+
+  const cat = CATS[selectedCat];
+  const lvlNames = {1:'Supported',2:'Developing',3:'Independent',4:'Advanced'};
+  document.getElementById('confirm-card').innerHTML = `
+    <div style="display:flex;gap:14px;align-items:center">
+      <div style="font-size:2.4rem">${cat.icon}</div>
+      <div>
+        <div style="font-weight:600;font-size:1rem;color:var(--s900)">${cat.label}</div>
+        <div style="font-size:.82rem;color:var(--s500);margin-top:3px">Starting at Level ${selectedLevel} — ${lvlNames[selectedLevel]}</div>
+      </div>
+    </div>`;
+}
+
+function showStep(n) {
+  document.querySelectorAll('.step').forEach((s, i) => s.classList.toggle('active', i === n - 1));
+}
+
+function updateStepIndicator(current) {
+  for (let i = 1; i <= 3; i++) {
+    const dot = document.getElementById(`si-${i}`);
+    dot.className = 'si-dot ' + (i < current ? 'done' : i === current ? 'curr' : '');
+  }
+}
+
+async function startExam() {
+  if (!childId || !selectedCat || !selectedLevel) return;
+
+  const btn = document.getElementById('btn-start-exam');
+  setButtonLoading(btn, true, 'Creating session…');
+
+  const { data: assessment, error } = await RE.Assessments.create(childId, AuthManager.currentUser.id, {
+    category: selectedCat,
+    difficultyLevel: selectedLevel
+  });
+
+  if (error) {
+    setButtonLoading(btn, false);
+    showToast('Failed to create assessment. Please try again.', 'error');
+    return;
+  }
+
+  window.location.href = `exam.html?id=${assessment.id}&cat=${selectedCat}&level=${selectedLevel}&child=${childId}`;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assessment Report — Ripa Elevate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/nav.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/report.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+<nav id="nav" class="solid">
+  <a href="../index.html" class="nav-logo">
+    <div class="nav-logo-mark"><svg viewBox="0 0 20 20" fill="none" width="20" height="20"><path d="M4 10C4 6.686 6.686 4 10 4" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M16 10C16 13.314 13.314 16 10 16" stroke="#7c9a7e" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="10" r="2" fill="white"/></svg></div>
+    Ripa <em>Elevate</em>
+  </a>
+  <ul class="nav-links">
+    <li><a href="parent-dashboard.html" class="nav-link">← Dashboard</a></li>
+  </ul>
+  <div class="nav-avatar" id="nav-avatar" onclick="AuthManager.signOut()">P</div>
+</nav>
+
+<div class="report-page page-body">
+  <div class="wrap-sm">
+
+    <!-- Loading -->
+    <div id="report-loading" class="empty-state">
+      <div class="spinner" style="width:28px;height:28px;border-width:3px;margin:0 auto 12px"></div>
+      <p>Loading your report…</p>
+    </div>
+
+    <!-- Report content -->
+    <div id="report-content" class="hidden" id="printable-report">
+
+      <!-- Actions bar -->
+      <div class="report-topbar">
+        <a href="parent-dashboard.html" class="btn btn-outline btn-sm">← Dashboard</a>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Print</button>
+          <button class="btn btn-dark btn-sm" onclick="exportPDF()">⬇ Download PDF</button>
+        </div>
+      </div>
+
+      <!-- Report header -->
+      <div class="report-card" id="report-main">
+        <div class="report-header-block">
+          <div>
+            <div class="lbl lbl-sage mb-8">Assessment Report</div>
+            <h1 class="dis" id="report-student-name">Loading…</h1>
+            <div class="report-meta-row" id="report-meta"></div>
+          </div>
+          <div class="report-level-badge-wrap" id="report-level-badge"></div>
+        </div>
+
+        <!-- Score band -->
+        <div class="score-band" id="score-band"></div>
+
+        <!-- Skill bar -->
+        <div class="report-score-row" id="report-score-row">
+          <div class="rsr-label">Score</div>
+          <div class="skill-track" style="flex:1">
+            <div class="skill-fill" id="report-score-fill" style="width:0%"></div>
+          </div>
+          <div class="rsr-pct" id="report-score-pct">0%</div>
+        </div>
+      </div>
+
+      <!-- Supports used -->
+      <div class="report-card" id="supports-card">
+        <h3 class="dis mb-16" style="font-size:1.2rem">Supports Used</h3>
+        <div class="supports-grid" id="supports-grid"></div>
+      </div>
+
+      <!-- Strengths + Growth -->
+      <div class="report-two-col">
+        <div class="report-card">
+          <h3 class="dis mb-16" style="font-size:1.2rem;color:var(--sage)">✓ Strengths</h3>
+          <div id="strengths-list"></div>
+        </div>
+        <div class="report-card">
+          <h3 class="dis mb-16" style="font-size:1.2rem;color:var(--amb)">→ Areas to Grow</h3>
+          <div id="growth-list"></div>
+        </div>
+      </div>
+
+      <!-- Recommendation -->
+      <div class="report-card">
+        <h3 class="dis mb-16" style="font-size:1.2rem">What This Means</h3>
+        <p class="blg" id="recommendation-text" style="color:var(--s600)"></p>
+      </div>
+
+      <!-- Next steps -->
+      <div class="report-card next-steps-card">
+        <h3 class="dis mb-12" style="font-size:1.2rem;color:var(--white)">Next Steps</h3>
+        <div class="next-steps-grid" id="next-steps-grid"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/nav.js"></script>
+<script>
+const LEVEL_LABELS = {1:'Supported',2:'Developing',3:'Independent',4:'Advanced'};
+const LEVEL_COLORS = {1:'var(--amb)',2:'var(--teal)',3:'var(--sage)',4:'var(--s900)'};
+const CAT_LABELS   = {math:'Mathematics',reading:'Reading',money:'Financial Literacy',social:'Social Reasoning',safety:'Safety Awareness',time:'Time & Planning',decision:'Decision-Making'};
+
+document.addEventListener('DOMContentLoaded', async () => {
+  await AuthManager.requireAuth();
+  const params   = new URLSearchParams(window.location.search);
+  const resultId = params.get('result');
+  const childId  = params.get('child'); // fallback for all reports view
+
+  if (resultId) {
+    await loadResult(resultId);
+  } else {
+    document.getElementById('report-loading').innerHTML = '<p style="color:var(--rose)">No report found. <a href="parent-dashboard.html">Go to dashboard →</a></p>';
+  }
+});
+
+async function loadResult(id) {
+  const { data: result, error } = await RE.Results.get(id);
+
+  document.getElementById('report-loading').classList.add('hidden');
+
+  if (error || !result) {
+    document.getElementById('report-loading').innerHTML = '<p style="color:var(--rose)">Report not found. <a href="parent-dashboard.html">Go to dashboard →</a></p>';
+    document.getElementById('report-loading').classList.remove('hidden');
+    return;
+  }
+
+  const content = document.getElementById('report-content');
+  content.classList.remove('hidden');
+
+  const { data: child } = await RE.Children.get(result.child_id);
+  const childName = child ? `${child.first_name} ${child.last_name}` : 'Student';
+
+  // Student name
+  document.getElementById('report-student-name').textContent = childName;
+
+  // Meta
+  const date = new Date(result.created_at).toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+  document.getElementById('report-meta').innerHTML = `
+    <span class="chip chip-dark">${CAT_LABELS[result.category]}</span>
+    <span style="color:var(--s400);font-size:.8rem">${date}</span>
+    ${child?.grade_level ? `<span style="color:var(--s400);font-size:.8rem">${child.grade_level}</span>` : ''}
+  `;
+
+  // Level badge
+  const levelColor = LEVEL_COLORS[result.level_reached];
+  document.getElementById('report-level-badge').innerHTML = `
+    <div class="level-badge-big" style="background:${levelColor}">
+      <div class="lbb-n">L${result.level_reached}</div>
+      <div class="lbb-label">${LEVEL_LABELS[result.level_reached]}</div>
+    </div>`;
+
+  // Score band
+  const pct = result.score_percent || 0;
+  const bandColor = pct >= 80 ? 'var(--sage)' : pct >= 60 ? 'var(--teal)' : pct >= 40 ? 'var(--amb)' : 'var(--rose)';
+  document.getElementById('score-band').innerHTML = `
+    <div class="sb-item">
+      <div class="sb-n" style="color:${bandColor}">${pct}%</div>
+      <div class="sb-l">Score</div>
+    </div>
+    <div class="sb-item">
+      <div class="sb-n">${result.correct_answers} / ${result.total_questions}</div>
+      <div class="sb-l">Correct</div>
+    </div>
+    <div class="sb-item">
+      <div class="sb-n">${Math.round((result.time_taken_seconds || 0) / 60)} min</div>
+      <div class="sb-l">Time taken</div>
+    </div>`;
+
+  // Score bar
+  setTimeout(() => {
+    document.getElementById('report-score-fill').style.width = pct + '%';
+    document.getElementById('report-score-fill').style.background = bandColor;
+    document.getElementById('report-score-pct').textContent = pct + '%';
+  }, 300);
+
+  // Supports
+  const supGrid = document.getElementById('supports-grid');
+  supGrid.innerHTML = `
+    <div class="sup-item ${result.hints_used > 0 ? 'sup-used' : ''}">
+      <div class="sup-icon">💡</div>
+      <div class="sup-label">Hint</div>
+      <div class="sup-count">${result.hints_used || 0}×</div>
+    </div>
+    <div class="sup-item ${result.listen_used > 0 ? 'sup-used' : ''}">
+      <div class="sup-icon">🔊</div>
+      <div class="sup-label">Listen</div>
+      <div class="sup-count">${result.listen_used || 0}×</div>
+    </div>`;
+
+  // Strengths
+  const str = result.strengths || [];
+  document.getElementById('strengths-list').innerHTML = str.length > 0
+    ? str.map(s => `<div class="report-bullet report-bullet-green">✓ ${s}</div>`).join('')
+    : '<div class="report-bullet" style="color:var(--s400)">Continue building this skill area.</div>';
+
+  // Growth areas
+  const grow = result.growth_areas || [];
+  document.getElementById('growth-list').innerHTML = grow.length > 0
+    ? grow.map(g => `<div class="report-bullet report-bullet-amber">→ ${g}</div>`).join('')
+    : '<div class="report-bullet" style="color:var(--s400)">No major gaps identified.</div>';
+
+  // Recommendation
+  document.getElementById('recommendation-text').textContent = result.recommendation || '';
+
+  // Next steps
+  const nextSteps = buildNextSteps(result);
+  document.getElementById('next-steps-grid').innerHTML = nextSteps.map(n =>
+    `<div class="ns-item"><div class="ns-icon">${n.icon}</div><div><strong>${n.title}</strong><div class="ns-desc">${n.desc}</div></div></div>`
+  ).join('');
+}
+
+function buildNextSteps(result) {
+  const steps = [];
+  if (result.level_reached < 4) {
+    steps.push({ icon:'📅', title:'Reassess in 30 days', desc:`Come back on ${getDateInDays(30)} to track growth in ${CAT_LABELS[result.category]}.` });
+  }
+  if (Object.keys(CAT_LABELS).length > 1) {
+    steps.push({ icon:'🗂', title:'Explore another category', desc:'Build a complete skill profile by assessing a different life skill area.' });
+  }
+  steps.push({ icon:'📄', title:'Share this report', desc:'Download the PDF to share with your child\'s IEP team, tutor, or therapist.' });
+  return steps;
+}
+
+function getDateInDays(days) {
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  return d.toLocaleDateString('en-US', {month:'long', day:'numeric'});
+}
+
+async function exportPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(20);
+  doc.text('Ripa Elevate — Assessment Report', 20, 20);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(11);
+  doc.text(`Student: ${document.getElementById('report-student-name').textContent}`, 20, 35);
+  doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 43);
+
+  const rec = document.getElementById('recommendation-text').textContent;
+  doc.setFontSize(10);
+  const lines = doc.splitTextToSize(rec, 170);
+  doc.text(lines, 20, 60);
+
+  doc.save('ripa-elevate-report.pdf');
+}
+</script>
+</body>
+</html>

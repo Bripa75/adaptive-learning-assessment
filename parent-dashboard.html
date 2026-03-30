@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parent Dashboard — Ripa Elevate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/nav.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+
+<nav id="nav" class="solid">
+  <a href="../index.html" class="nav-logo">
+    <div class="nav-logo-mark"><svg viewBox="0 0 20 20" fill="none" width="20" height="20"><path d="M4 10C4 6.686 6.686 4 10 4" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M16 10C16 13.314 13.314 16 10 16" stroke="#7c9a7e" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="10" r="2" fill="white"/></svg></div>
+    Ripa <em>Elevate</em>
+  </a>
+  <ul class="nav-links">
+    <li><a href="parent-dashboard.html" class="nav-link act">Dashboard</a></li>
+    <li><a href="account.html"          class="nav-link">Account</a></li>
+    <li><a href="../for-parents.html"   class="nav-link">Pricing</a></li>
+  </ul>
+  <div class="nav-auth">
+    <div class="nav-avatar" id="nav-avatar" title="Sign out" onclick="AuthManager.signOut()">P</div>
+  </div>
+</nav>
+
+<div class="dash-page page-body">
+  <div class="wrap">
+
+    <!-- Header -->
+    <div class="pdash-header">
+      <div>
+        <div class="lbl">Parent Dashboard</div>
+        <h1 class="dis mt-8" id="welcome-msg">Welcome back</h1>
+      </div>
+      <button class="btn btn-dark" onclick="openAddChild()">+ Add Child</button>
+    </div>
+
+    <!-- Loading state -->
+    <div id="loading-state" class="empty-state">
+      <div style="display:flex;align-items:center;justify-content:center;gap:10px">
+        <div class="spinner"></div>
+        <span class="sm">Loading your dashboard…</span>
+      </div>
+    </div>
+
+    <!-- Children cards -->
+    <div id="children-grid" class="children-grid hidden"></div>
+
+    <!-- Empty state - no children -->
+    <div id="empty-children" class="empty-state hidden">
+      <div class="empty-icon">👧</div>
+      <h3>Add your first child</h3>
+      <p>Create a profile for your child to get started with their first assessment.</p>
+      <button class="btn btn-dark mt-24" onclick="openAddChild()">+ Add Child Profile</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── ADD CHILD MODAL ── -->
+<div class="modal-backdrop" id="add-child-modal">
+  <div class="modal" style="position:relative">
+    <button class="modal-close" onclick="closeAddChild()">✕</button>
+    <h3 class="dis mb-16">Add a Child Profile</h3>
+    <div id="modal-error" class="alert alert-error hidden"></div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">First name <span class="req">*</span></label>
+        <input class="form-input" type="text" id="mc-first" placeholder="Jordan">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Last name <span class="req">*</span></label>
+        <input class="form-input" type="text" id="mc-last" placeholder="Smith">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Grade level</label>
+      <select class="form-select" id="mc-grade">
+        <option value="">Select…</option>
+        <option>5th Grade</option><option>6th Grade</option><option>7th Grade</option>
+        <option>8th Grade</option><option>9th Grade</option><option>Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-checkbox">
+        <input type="checkbox" id="mc-iep">
+        <span>This child has an IEP or 504 plan</span>
+      </label>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Notes (optional)</label>
+      <textarea class="form-textarea" id="mc-notes" placeholder="Anything you want to note about your child's learning profile…" style="min-height:70px"></textarea>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:8px">
+      <button class="btn btn-outline flex-1" onclick="closeAddChild()">Cancel</button>
+      <button class="btn btn-dark flex-1" id="btn-add-child" onclick="submitAddChild()">Create Profile</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/nav.js"></script>
+<script src="../js/parent-dashboard.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  await AuthManager.requireAuth();
+  ParentDashboard.init();
+});
+</script>
+</body>
+</html>

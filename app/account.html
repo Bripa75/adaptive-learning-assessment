@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account — Ripa Elevate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/nav.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+.account-layout{display:grid;grid-template-columns:220px 1fr;gap:32px;padding:40px 0 96px;align-items:start;}
+.account-nav{background:var(--white);border:1px solid var(--s200);border-radius:var(--r16);padding:12px;position:sticky;top:88px;}
+.acct-nav-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:var(--r8);font-size:.84rem;color:var(--s600);cursor:pointer;margin-bottom:2px;text-decoration:none;transition:background .12s;}
+.acct-nav-item:hover{background:var(--s50);}
+.acct-nav-item.active{background:var(--s100);color:var(--s900);font-weight:500;}
+.acct-section{background:var(--white);border:1px solid var(--s200);border-radius:var(--r20);padding:32px;margin-bottom:20px;}
+.acct-section h2{font-family:var(--serif);font-size:1.3rem;margin-bottom:6px;}
+.acct-section .sm{color:var(--s500);margin-bottom:24px;}
+.child-list-item{display:flex;align-items:center;gap:14px;padding:14px;background:var(--s50);border:1px solid var(--s200);border-radius:var(--r12);margin-bottom:9px;}
+.child-list-item:last-child{margin-bottom:0;}
+.ci-avatar{width:38px;height:38px;border-radius:50%;background:var(--sage);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:.9rem;color:var(--white);flex-shrink:0;}
+.ci-info{flex:1;}
+.ci-name{font-weight:600;font-size:.88rem;}
+.ci-meta{font-size:.72rem;color:var(--s400);}
+.plan-badge{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:var(--sage-m);border:1px solid var(--sage-l);border-radius:var(--r12);margin-bottom:16px;}
+.plan-name{font-weight:600;font-size:.9rem;color:var(--s900);}
+.plan-detail{font-size:.76rem;color:var(--s600);margin-top:2px;}
+@media(max-width:760px){.account-layout{grid-template-columns:1fr;}.account-nav{position:static;}}
+</style>
+</head>
+<body>
+<nav id="nav" class="solid">
+  <a href="../index.html" class="nav-logo">
+    <div class="nav-logo-mark"><svg viewBox="0 0 20 20" fill="none" width="20" height="20"><path d="M4 10C4 6.686 6.686 4 10 4" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M16 10C16 13.314 13.314 16 10 16" stroke="#7c9a7e" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="10" r="2" fill="white"/></svg></div>
+    Ripa <em>Elevate</em>
+  </a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <a href="parent-dashboard.html" class="nav-link">← Dashboard</a>
+    <div class="nav-avatar" id="nav-avatar">P</div>
+  </div>
+</nav>
+
+<div class="page-body">
+  <div class="wrap">
+    <div style="padding:32px 0 8px">
+      <h1 class="dis" style="font-size:1.8rem">Account Settings</h1>
+    </div>
+    <div class="account-layout">
+
+      <nav class="account-nav">
+        <a href="#profile"      class="acct-nav-item active">👤 Profile</a>
+        <a href="#children"     class="acct-nav-item" id="add-child">👦 My Children</a>
+        <a href="#subscription" class="acct-nav-item">💳 Subscription</a>
+        <a href="#security"     class="acct-nav-item">🔒 Security</a>
+        <div style="height:1px;background:var(--s200);margin:10px 4px"></div>
+        <a href="#" onclick="AuthManager.signOut()" class="acct-nav-item" style="color:var(--rose)">→ Sign Out</a>
+      </nav>
+
+      <div>
+        <!-- Profile -->
+        <div class="acct-section" id="profile">
+          <h2>Your Profile</h2>
+          <p class="sm">This information is private and only visible to you.</p>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">First Name</label>
+              <input type="text" id="p-fname" class="form-input">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Last Name</label>
+              <input type="text" id="p-lname" class="form-input">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" id="p-email" class="form-input" disabled>
+          </div>
+          <button class="btn btn-dark" onclick="saveProfile()">Save Changes</button>
+        </div>
+
+        <!-- Children -->
+        <div class="acct-section" id="children">
+          <h2>My Children</h2>
+          <p class="sm">Manage the student profiles linked to your account.</p>
+          <div id="children-list"><div class="skeleton" style="height:60px;border-radius:var(--r12)"></div></div>
+          <button class="btn btn-outline mt-16" onclick="toggleAddChild()">+ Add Child</button>
+
+          <div id="add-child-form" class="hidden" style="margin-top:20px;padding-top:20px;border-top:1px solid var(--s200)">
+            <div class="lbl" style="margin-bottom:14px">New Child Profile</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">First Name <span class="req">*</span></label>
+                <input type="text" id="nc-fname" class="form-input" placeholder="Child's first name">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Last Name</label>
+                <input type="text" id="nc-lname" class="form-input" placeholder="Last name">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Grade Level</label>
+                <select id="nc-grade" class="form-select">
+                  <option value="">Select grade</option>
+                  <option>4th Grade</option><option>5th Grade</option><option>6th Grade</option>
+                  <option>7th Grade</option><option>8th Grade</option><option>9th Grade</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="form-group" style="display:flex;align-items:flex-end;padding-bottom:18px">
+                <label class="form-checkbox">
+                  <input type="checkbox" id="nc-iep">
+                  <span>This child has an IEP</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Notes (optional)</label>
+              <textarea id="nc-notes" class="form-textarea" rows="2" placeholder="Any notes about learning needs or accommodations"></textarea>
+            </div>
+            <div style="display:flex;gap:10px">
+              <button class="btn btn-dark" onclick="addChild()">Add Child</button>
+              <button class="btn btn-outline" onclick="toggleAddChild()">Cancel</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Subscription -->
+        <div class="acct-section" id="subscription">
+          <h2>Subscription</h2>
+          <p class="sm">Manage your plan and billing.</p>
+          <div id="plan-info"><div class="skeleton" style="height:64px;border-radius:var(--r12)"></div></div>
+          <div style="margin-top:16px;display:flex;gap:10px" id="plan-actions"></div>
+        </div>
+
+        <!-- Security -->
+        <div class="acct-section" id="security">
+          <h2>Security</h2>
+          <p class="sm">Change your password or sign out of all devices.</p>
+          <button class="btn btn-outline" onclick="sendReset()">Send Password Reset Email</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/nav.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const session = await AuthManager.requireAuth('../app/login.html');
+  if (!session) return;
+
+  // Load profile
+  const { data: profile } = await RE.Profiles.get(session.user.id);
+  if (profile) {
+    document.getElementById('p-fname').value = profile.first_name || '';
+    document.getElementById('p-lname').value = profile.last_name  || '';
+    document.getElementById('nav-avatar').textContent = ((profile.first_name?.[0]||'') + (profile.last_name?.[0]||'')).toUpperCase() || 'P';
+  }
+  document.getElementById('p-email').value = session.user.email || '';
+
+  // Load children
+  await loadChildren(session.user.id);
+
+  // Load plan
+  await loadPlan(session.user.id);
+
+  // Hash scroll
+  if (window.location.hash === '#add-child') {
+    document.getElementById('children').scrollIntoView({ behavior:'smooth' });
+    toggleAddChild();
+  }
+});
+
+async function loadChildren(uid) {
+  const { data } = await RE.Children.getByParent(uid);
+  const list = document.getElementById('children-list');
+  const colors = ['#7c9a7e','#4a8fa8','#c4812a','#b05060'];
+
+  if (!data || data.length === 0) {
+    list.innerHTML = `<p class="sm">No children added yet.</p>`;
+    return;
+  }
+  list.innerHTML = data.map((c, i) => `
+    <div class="child-list-item">
+      <div class="ci-avatar" style="background:${colors[i%colors.length]}">${(c.first_name[0]+(c.last_name?.[0]||'')).toUpperCase()}</div>
+      <div class="ci-info">
+        <div class="ci-name">${c.first_name} ${c.last_name || ''}</div>
+        <div class="ci-meta">${c.grade_level||''}${c.has_iep?' · IEP':''}</div>
+      </div>
+      <a href="child-select.html" class="btn btn-outline btn-sm">Start Assessment</a>
+    </div>
+  `).join('');
+}
+
+async function loadPlan(uid) {
+  const { data } = await RE.Payments.get(uid);
+  const planInfo = document.getElementById('plan-info');
+  const planActions = document.getElementById('plan-actions');
+  if (!data) return;
+
+  const trialEnd = data.trial_ends_at ? new Date(data.trial_ends_at).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) : null;
+  const planLabels = {trial:'Free Trial',one_time:'One-Time Assessment',monthly:'Monthly Plan',annual:'Annual Plan'};
+
+  planInfo.innerHTML = `
+    <div class="plan-badge">
+      <div>
+        <div class="plan-name">${planLabels[data.plan]||data.plan}</div>
+        <div class="plan-detail">${data.plan==='trial'&&trialEnd?`Trial ends ${trialEnd}`:data.status==='active'?'Active subscription':'Inactive'}</div>
+      </div>
+      <span class="chip ${data.status==='active'?'chip-sage':data.plan==='trial'?'chip-amb':'chip-dark'}">${data.status}</span>
+    </div>
+  `;
+
+  if (data.plan === 'trial' || data.status !== 'active') {
+    planActions.innerHTML = `<a href="../for-parents.html" class="btn btn-dark">Upgrade Plan</a>`;
+  }
+}
+
+async function saveProfile() {
+  const uid = (await RE.Auth.getUser())?.id;
+  if (!uid) return;
+  const { error } = await RE.Profiles.update(uid, {
+    first_name: document.getElementById('p-fname').value.trim(),
+    last_name:  document.getElementById('p-lname').value.trim()
+  });
+  showToast(error ? 'Could not save changes.' : 'Profile updated!', error ? 'error' : 'success');
+}
+
+function toggleAddChild() {
+  document.getElementById('add-child-form').classList.toggle('hidden');
+}
+
+async function addChild() {
+  const uid = (await RE.Auth.getUser())?.id;
+  if (!uid) return;
+  const firstName = document.getElementById('nc-fname').value.trim();
+  if (!firstName) { showFormError('nc-fname','First name is required'); return; }
+  const { error } = await RE.Children.create(uid, {
+    firstName,
+    lastName:   document.getElementById('nc-lname').value.trim(),
+    gradeLevel: document.getElementById('nc-grade').value,
+    hasIep:     document.getElementById('nc-iep').checked,
+    notes:      document.getElementById('nc-notes').value.trim()
+  });
+  if (error) { showToast('Could not add child.','error'); return; }
+  showToast('Child added!','success');
+  toggleAddChild();
+  await loadChildren(uid);
+}
+
+async function sendReset() {
+  const email = document.getElementById('p-email').value;
+  const { error } = await RE.Auth.resetPassword(email);
+  showToast(error ? 'Could not send reset email.' : 'Password reset email sent!', error ? 'error' : 'success');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Select Child — Ripa Elevate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/nav.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+.cs-wrap{min-height:calc(100vh - 68px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 20px;}
+.cs-box{width:100%;max-width:560px;}
+.cs-header{text-align:center;margin-bottom:36px;}
+.cs-header h1{font-family:var(--serif);font-size:1.9rem;margin-bottom:8px;}
+.cs-header p{font-size:.88rem;color:var(--s500);}
+.children-list{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;}
+.child-btn{display:flex;align-items:center;gap:16px;padding:18px 20px;background:var(--white);border:1.5px solid var(--s200);border-radius:var(--r16);cursor:pointer;text-align:left;width:100%;font-family:var(--sans);transition:all .15s;}
+.child-btn:hover{border-color:var(--sage);background:var(--sage-m);}
+.child-avatar{width:44px;height:44px;border-radius:50%;background:var(--sage);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1.1rem;color:var(--white);flex-shrink:0;}
+.child-info{flex:1;}
+.child-btn-name{font-weight:600;font-size:.95rem;color:var(--s900);}
+.child-btn-meta{font-size:.76rem;color:var(--s500);margin-top:2px;}
+.child-btn-arrow{color:var(--s300);font-size:1.1rem;}
+.add-child-link{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border:1.5px dashed var(--s300);border-radius:var(--r16);font-size:.86rem;color:var(--s500);cursor:pointer;text-decoration:none;transition:all .15s;}
+.add-child-link:hover{border-color:var(--s500);color:var(--s800);}
+.skeleton-child{height:80px;border-radius:var(--r16);}
+</style>
+</head>
+<body>
+<nav id="nav" class="solid">
+  <a href="../index.html" class="nav-logo">
+    <div class="nav-logo-mark"><svg viewBox="0 0 20 20" fill="none" width="20" height="20"><path d="M4 10C4 6.686 6.686 4 10 4" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M16 10C16 13.314 13.314 16 10 16" stroke="#7c9a7e" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="10" r="2" fill="white"/></svg></div>
+    Ripa <em>Elevate</em>
+  </a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <a href="parent-dashboard.html" class="nav-link">← Dashboard</a>
+  </div>
+</nav>
+
+<div class="page-body">
+  <div class="cs-wrap">
+    <div class="cs-box">
+      <div class="cs-header">
+        <h1>Who is taking this assessment?</h1>
+        <p>Select the child you'd like to assess today.</p>
+      </div>
+      <div class="children-list" id="children-list">
+        <div class="skeleton skeleton-child"></div>
+        <div class="skeleton skeleton-child"></div>
+      </div>
+      <a href="account.html#add-child" class="add-child-link">
+        + Add a new child profile
+      </a>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/nav.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const session = await AuthManager.requireAuth('../app/login.html');
+  if (!session) return;
+
+  const { data: children } = await RE.Children.getByParent(session.user.id);
+  const list = document.getElementById('children-list');
+
+  if (!children || children.length === 0) {
+    list.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">👦</div>
+        <h3>No children yet</h3>
+        <p>Add a child profile to start their first assessment.</p>
+        <a href="account.html#add-child" class="btn btn-dark mt-16">Add Child</a>
+      </div>
+    `;
+    return;
+  }
+
+  const colors = ['#7c9a7e','#4a8fa8','#c4812a','#b05060'];
+  list.innerHTML = children.map((c, i) => {
+    const initials = (c.first_name[0] + (c.last_name[0] || '')).toUpperCase();
+    const bg = colors[i % colors.length];
+    return `
+      <button class="child-btn" onclick="selectChild('${c.id}','${c.first_name}')">
+        <div class="child-avatar" style="background:${bg}">${initials}</div>
+        <div class="child-info">
+          <div class="child-btn-name">${c.first_name} ${c.last_name}</div>
+          <div class="child-btn-meta">${c.grade_level || ''}${c.has_iep ? ' · IEP' : ''}</div>
+        </div>
+        <div class="child-btn-arrow">→</div>
+      </button>
+    `;
+  }).join('');
+});
+
+function selectChild(id, name) {
+  sessionStorage.setItem('selected_child_id', id);
+  sessionStorage.setItem('selected_child_name', name);
+  window.location.href = 'exam-start.html';
+}
+</script>
+</body>
+</html>
