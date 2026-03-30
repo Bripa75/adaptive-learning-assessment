@@ -3,93 +3,276 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Login — Ripa Elevate</title>
+<title>Ripa Elevate — Adaptive Assessment for Every Student</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/base.css">
-<link rel="stylesheet" href="../css/components.css">
-<style>
-body{background:var(--s900);display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
-.admin-login-box{background:var(--s800);border:1px solid var(--s700);border-radius:var(--r24);padding:44px 40px;width:100%;max-width:400px;}
-.al-logo{display:flex;align-items:center;gap:10px;margin-bottom:32px;}
-.al-logo-mark{width:34px;height:34px;background:var(--sage);border-radius:8px;display:flex;align-items:center;justify-content:center;}
-.al-logo-text{font-family:var(--serif);font-size:1.1rem;color:var(--white);}
-.al-logo-sub{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--s500);display:block;}
-.admin-login-box h1{font-family:var(--serif);font-size:1.5rem;color:var(--white);margin-bottom:6px;}
-.admin-login-box .sm{color:var(--s500);margin-bottom:28px;}
-.admin-login-box .form-label{color:var(--s400);}
-.admin-login-box .form-input{background:var(--s700);border-color:var(--s600);color:var(--white);}
-.admin-login-box .form-input::placeholder{color:var(--s500);}
-.admin-login-box .form-input:focus{border-color:var(--sage);background:var(--s700);}
-</style>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/nav.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/home.css">
 </head>
 <body>
-<div class="admin-login-box">
-  <div class="al-logo">
-    <div class="al-logo-mark"><svg viewBox="0 0 20 20" fill="none" width="16" height="16"><path d="M4 10C4 6.686 6.686 4 10 4" stroke="white" stroke-width="2.2" stroke-linecap="round"/><path d="M16 10C16 13.314 13.314 16 10 16" stroke="white" stroke-width="2.2" stroke-linecap="round"/><circle cx="10" cy="10" r="2" fill="white"/></svg></div>
-    <div>
-      <div class="al-logo-text">Ripa Elevate</div>
-      <span class="al-logo-sub">Admin Portal</span>
+
+<!-- ══ NAV ══ -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-mark">
+      <svg viewBox="0 0 20 20" fill="none" width="20" height="20">
+        <path d="M4 10C4 6.686 6.686 4 10 4" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        <path d="M16 10C16 13.314 13.314 16 10 16" stroke="#7c9a7e" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="10" cy="10" r="2" fill="white"/>
+      </svg>
     </div>
+    Ripa <em>Elevate</em>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html"         class="nav-link act">Home</a></li>
+    <li><a href="how-it-works.html"  class="nav-link">How It Works</a></li>
+    <li><a href="questions.html"     class="nav-link">Question Bank</a></li>
+    <li><a href="for-parents.html"   class="nav-link">For Parents</a></li>
+    <li><a href="about.html"         class="nav-link">Our Story</a></li>
+  </ul>
+  <div class="nav-auth" id="nav-auth" style="display:none">
+    <a href="app/parent-dashboard.html" class="nav-link">Dashboard</a>
+    <div class="nav-avatar" id="nav-avatar" onclick="AuthManager.signOut()">P</div>
   </div>
-  <h1>Founders only</h1>
-  <p class="sm">This area is restricted to admin accounts.</p>
+  <div class="nav-auth" id="nav-guest">
+    <a href="app/login.html"  class="nav-link">Sign In</a>
+    <a href="for-parents.html" class="nav-cta">Get Started</a>
+  </div>
+  <button class="nav-burger" id="nav-burger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
 
-  <div id="login-error" class="alert alert-error hidden"></div>
-
-  <div class="form-group">
-    <label class="form-label">Email</label>
-    <input type="email" id="a-email" class="form-input" placeholder="your@email.com">
-  </div>
-  <div class="form-group">
-    <label class="form-label">Password</label>
-    <input type="password" id="a-password" class="form-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')adminLogin()">
-  </div>
-  <button class="btn btn-sage btn-full mt-8" id="login-btn" onclick="adminLogin()">Sign In to Admin</button>
+<!-- Mobile menu -->
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html"        class="nav-link">Home</a>
+  <a href="how-it-works.html" class="nav-link">How It Works</a>
+  <a href="questions.html"    class="nav-link">Question Bank</a>
+  <a href="for-parents.html"  class="nav-link">For Parents</a>
+  <a href="about.html"        class="nav-link">Our Story</a>
+  <a href="contact.html"      class="nav-link">Contact</a>
+  <a href="for-parents.html"  class="nav-cta">Get Started</a>
 </div>
 
+<!-- ══════ HERO ══════ -->
+<section class="hero page-body">
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <span class="dot-pulse"></span>
+      <span>Built by educators. Designed for every learner.</span>
+    </div>
+    <h1 class="dis">Assessment that sees <em>how</em> students actually think</h1>
+    <p class="blg">Ripa Elevate is an adaptive platform for middle school students — including those with different learning needs — that measures real ability, real-world skills, and independent thinking.</p>
+    <div class="hero-actions">
+      <a href="for-parents.html" class="btn btn-dark">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        I'm a Parent
+      </a>
+      <a href="contact.html" class="btn btn-outline">I'm an Educator</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="stat-n">7</div><div class="stat-l">Skill categories</div></div>
+      <div class="hero-stat"><div class="stat-n">4</div><div class="stat-l">Adaptive levels</div></div>
+      <div class="hero-stat"><div class="stat-n">200+</div><div class="stat-l">Questions</div></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-card-wrap">
+      <div class="float-badge float-top">
+        <div class="fb-icon" style="background:var(--sage-m)">✓</div>
+        Level 3 reached — Independent
+      </div>
+      <!-- Live question card mockup -->
+      <div class="qcard">
+        <div class="qcard-bar">
+          <div class="qcard-dots">
+            <span style="background:#f87171"></span>
+            <span style="background:#fbbf24"></span>
+            <span style="background:#4ade80"></span>
+          </div>
+          <div class="qcard-prog"><div class="qcard-fill" id="hero-prog"></div></div>
+          <span class="qcard-meta">9 of 20</span>
+        </div>
+        <div class="qcard-body">
+          <span class="qcard-tag">Life Skills · Money</span>
+          <p class="qcard-q">You have <mark>$20</mark> for groceries. Milk is $3.50, bread is $2.75, eggs are $4.00. How much will you have left?</p>
+          <div class="qcard-opts">
+            <div class="qcard-opt"><span class="qcard-let">A</span>$8.25</div>
+            <div class="qcard-opt sel"><span class="qcard-let">✓</span>$9.75</div>
+            <div class="qcard-opt"><span class="qcard-let">C</span>$10.25</div>
+          </div>
+        </div>
+        <div class="qcard-adapt">
+          <span class="adapt-dot"></span>
+          <span>Adaptive engine calibrating</span>
+          <span class="qcard-level">Difficulty → Level 3</span>
+        </div>
+        <div class="qcard-tools">
+          <button class="qcard-tool">🔊 Listen</button>
+          <button class="qcard-tool">💡 Hint</button>
+          <button class="qcard-tool">📋 Steps</button>
+        </div>
+      </div>
+      <div class="float-badge float-bot">
+        <div class="fb-icon" style="background:var(--teal-l)">💡</div>
+        Hint available — tap to reveal
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ AUDIENCE SPLIT ══════ -->
+<section class="audience-split">
+  <div class="wrap">
+    <div class="audience-grid">
+      <a href="for-parents.html" class="audience-card audience-parent">
+        <div class="aud-icon">👨‍👩‍👧</div>
+        <h3>For Parents</h3>
+        <p>Understand what your child can do before the next IEP meeting. No school involvement required. Get a clear, plain-language report in one session.</p>
+        <div class="aud-cta">Start your child's assessment →</div>
+        <div class="aud-tag">From $49 · Free trial available</div>
+      </a>
+      <a href="contact.html" class="audience-card audience-school">
+        <div class="aud-icon">🏫</div>
+        <h3>For Schools &amp; Educators</h3>
+        <p>Bring adaptive assessment into your classroom. IEP-aligned reports, teacher dashboard, and real skill profiles for every student you support.</p>
+        <div class="aud-cta">Request a demo →</div>
+        <div class="aud-tag">School &amp; district pricing available</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ PROBLEM BAND ══════ -->
+<section class="problem-band">
+  <div class="wrap">
+    <div class="pb-grid">
+      <div>
+        <div class="lbl" style="color:var(--s500);margin-bottom:12px">The Problem</div>
+        <h2 class="dis">Traditional tests measure the <em>wrong things</em></h2>
+        <p>Schools have spent decades measuring students against a narrow set of academic benchmarks — right or wrong, above or below grade level. For students who learn differently, this doesn't just miss the mark. It misses the student entirely.</p>
+        <p>Ripa Elevate was built to change that — by two people who watched it fail from inside the system.</p>
+        <a href="about.html" class="btn btn-white mt-24" style="display:inline-flex">Read our story →</a>
+      </div>
+      <div class="ps-grid">
+        <div class="ps-item"><div class="ps-n">1 in 5</div><div class="ps-l">Students has a learning or thinking difference that standard tests aren't designed for</div></div>
+        <div class="ps-item"><div class="ps-n">0%</div><div class="ps-l">Of traditional assessments measure real-world life skills or independent functioning</div></div>
+        <div class="ps-item ps-span"><div class="ps-n" style="color:var(--sage)">The gap</div><div class="ps-l">A student can fail a standardized test and still be capable of navigating their life — and vice versa. Current assessments cannot tell the difference. Ripa Elevate can.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ LIFE SKILLS ══════ -->
+<section class="sec lss" style="background:var(--s50);border-top:1px solid var(--s200)">
+  <div class="wrap">
+    <div class="sec-header">
+      <div class="lbl lbl-teal">Life Skills — A Core Category</div>
+      <h2 class="dis mt-12">Real questions about the real world</h2>
+      <p class="blg mt-12">Traditional assessments skip the most important question: can this student navigate their life? Ripa Elevate treats life skills as a primary category — not a footnote.</p>
+    </div>
+    <div class="ls-grid">
+      <div class="ls-card"><div class="ls-icon">💰</div><div class="ls-name">Financial Literacy</div><div class="ls-desc">Purchases, change, budgeting</div></div>
+      <div class="ls-card"><div class="ls-icon">🤝</div><div class="ls-name">Social Understanding</div><div class="ls-desc">Reading situations, responding appropriately</div></div>
+      <div class="ls-card"><div class="ls-icon">🧠</div><div class="ls-name">Decision-Making</div><div class="ls-desc">Choosing the best course of action</div></div>
+      <div class="ls-card"><div class="ls-icon">⏱️</div><div class="ls-name">Time &amp; Planning</div><div class="ls-desc">Managing schedules and priorities</div></div>
+      <div class="ls-card"><div class="ls-icon">⚠️</div><div class="ls-name">Safety Awareness</div><div class="ls-desc">Recognizing risk, knowing when to seek help</div></div>
+    </div>
+    <div style="text-align:center;margin-top:32px">
+      <a href="questions.html" class="btn btn-outline">Explore the full question bank →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ LEVEL SYSTEM ══════ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-header">
+      <div class="lbl">The Level System</div>
+      <h2 class="dis mt-12">Levels, not grades. Growth, not comparison.</h2>
+      <p class="blg mt-12">Students are never ranked against each other. Each level describes how independently they can think and function.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:16px">
+      <div class="level-tile lt-1"><div class="level-n">01</div><div class="level-name">Supported</div><div class="level-desc">Demonstrates understanding with structured support and guided steps.</div><div class="level-gr">Approx. Gr. 3–5 functional range</div></div>
+      <div class="level-tile lt-2"><div class="level-n">02</div><div class="level-name">Developing</div><div class="level-desc">Works through problems with occasional hints — building toward independence.</div><div class="level-gr">Approx. Gr. 5–7 functional range</div></div>
+      <div class="level-tile lt-3"><div class="level-n">03</div><div class="level-name">Independent</div><div class="level-desc">Navigates most tasks without support, demonstrating reliable reasoning.</div><div class="level-gr">Approx. Gr. 7–9 functional range</div></div>
+      <div class="level-tile lt-4"><div class="level-n">04</div><div class="level-name">Advanced</div><div class="level-desc">Applies skills flexibly across novel contexts with self-directed thinking.</div><div class="level-gr">Gr. 9+ functional range</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ CTA BAND ══════ -->
+<div class="wrap" style="padding-bottom:96px">
+  <div class="cta-section">
+    <div>
+      <h2 class="dis" style="color:var(--white)">Ready to understand your student better?</h2>
+      <p style="color:var(--s400);margin-top:10px">Whether you're a parent or an educator — start with a free trial.</p>
+    </div>
+    <div style="display:flex;gap:12px;flex-shrink:0;position:relative;z-index:1">
+      <a href="for-parents.html" class="btn btn-white">For Parents</a>
+      <a href="contact.html"     class="btn btn-ghost-white">For Schools</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ FOOTER ══════ -->
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <div class="footer-mark"><svg viewBox="0 0 20 20" fill="none" width="13" height="13"><path d="M4 10C4 6.686 6.686 4 10 4" stroke="white" stroke-width="2.2" stroke-linecap="round"/><path d="M16 10C16 13.314 13.314 16 10 16" stroke="white" stroke-width="2.2" stroke-linecap="round"/><circle cx="10" cy="10" r="2" fill="white"/></svg></div>
+          Ripa Elevate
+        </div>
+        <p class="footer-tagline">Adaptive assessment built for the way students actually think, learn, and function — not the way traditional tests assume they do.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <a href="how-it-works.html">How It Works</a>
+        <a href="questions.html">Question Bank</a>
+        <a href="word-bank.html">Word Bank</a>
+        <a href="dashboard.html">Dashboard Preview</a>
+      </div>
+      <div class="footer-col">
+        <h4>For Families</h4>
+        <a href="for-parents.html">Parent Overview</a>
+        <a href="app/signup.html">Create Account</a>
+        <a href="app/login.html">Sign In</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="about.html">Our Story</a>
+        <a href="contact.html">Schools &amp; Districts</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Ripa Elevate. All rights reserved.</span>
+      <span><a href="#">Privacy</a> · <a href="#">Terms</a></span>
+    </div>
+  </div>
+</footer>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../js/supabase.js"></script>
-<script src="../js/auth.js"></script>
+<script src="js/supabase.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/nav.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', async () => {
-  // If already logged in and admin, go to dashboard
-  const session = await RE.Auth.getSession();
-  if (session) {
-    const isAdmin = await RE.Profiles.isAdmin(session.user.id);
-    if (isAdmin) window.location.href = 'dashboard.html';
-  }
-});
+  // Hero progress bar animation
+  setTimeout(() => {
+    const p = document.getElementById('hero-prog');
+    if (p) p.style.width = '60%';
+  }, 800);
 
-async function adminLogin() {
-  const email    = document.getElementById('a-email').value.trim();
-  const password = document.getElementById('a-password').value;
-  const errEl    = document.getElementById('login-error');
-  const btn      = document.getElementById('login-btn');
-
-  errEl.classList.add('hidden');
-  setButtonLoading(btn, true, 'Signing in…');
-
-  const { data, error } = await RE.Auth.signIn(email, password);
-
-  if (error) {
-    setButtonLoading(btn, false);
-    errEl.textContent = 'Invalid email or password.';
-    errEl.classList.remove('hidden');
-    return;
-  }
-
-  const isAdmin = await RE.Profiles.isAdmin(data.user.id);
-  if (!isAdmin) {
-    await RE.Auth.signOut();
-    setButtonLoading(btn, false);
-    errEl.textContent = 'This account does not have admin access.';
-    errEl.classList.remove('hidden');
-    return;
-  }
-
-  window.location.href = 'dashboard.html';
-}
+  // Init auth state
+  document.addEventListener('DOMContentLoaded', () => {
+    AuthManager.init();
+  });
 </script>
 </body>
 </html>

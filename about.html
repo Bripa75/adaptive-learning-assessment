@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Story — Ripa Elevate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/nav.css">
+<link rel="stylesheet" href="css/components.css">
+<style>
+.about-hero{padding:96px 0 72px;text-align:center;}
+.about-hero .lbl{margin-bottom:14px;}
+.about-hero h1.dis em{color:var(--sage);}
+.about-hero .blg{max-width:600px;margin:18px auto 0;}
+
+.founders-section{padding:72px 0 88px;}
+.founders-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;}
+.founder-card{background:var(--white);border:1px solid var(--s200);border-radius:var(--r24);padding:40px;}
+.founder-avatar{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1.8rem;color:var(--white);margin-bottom:20px;}
+.founder-card h3{font-family:var(--serif);font-size:1.3rem;margin-bottom:4px;}
+.founder-title{font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--sage);margin-bottom:16px;}
+.founder-card p{font-size:.88rem;color:var(--s500);line-height:1.8;margin-bottom:12px;}
+
+.mission-band{background:var(--s900);padding:88px 0;}
+.mission-band h2.dis{color:var(--white);}
+.mission-band h2.dis em{color:var(--sage);}
+.mission-band p{color:var(--s400);line-height:1.85;font-size:.92rem;margin-top:16px;max-width:680px;}
+.mission-values{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:44px;}
+.mv{background:var(--s800);border-radius:var(--r16);padding:24px;}
+.mv h4{color:var(--white);font-size:.92rem;margin-bottom:8px;}
+.mv p{color:var(--s400);font-size:.8rem;line-height:1.65;}
+
+.story-section{padding:88px 0;}
+.story-grid{display:grid;grid-template-columns:1fr 2fr;gap:64px;align-items:start;}
+.story-lbl{position:sticky;top:88px;}
+.story-body p{font-size:.95rem;color:var(--s600);line-height:1.9;margin-bottom:24px;}
+.story-body p:first-child{font-family:var(--serif);font-size:1.25rem;color:var(--s900);line-height:1.7;}
+
+.ripa-brand{padding:72px 0 96px;background:var(--s50);border-top:1px solid var(--s200);}
+.brand-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:40px;}
+.brand-card{background:var(--white);border:1px solid var(--s200);border-radius:var(--r20);padding:32px;}
+.brand-card h3{font-family:var(--serif);font-size:1.1rem;margin-bottom:8px;}
+.brand-tag{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;display:block;}
+
+@media(max-width:960px){
+  .founders-grid,.mission-values,.story-grid,.brand-grid{grid-template-columns:1fr;}
+  .story-lbl{position:static;}
+}
+</style>
+</head>
+<body>
+<nav id="nav">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-mark"><svg viewBox="0 0 20 20" fill="none" width="20" height="20"><path d="M4 10C4 6.686 6.686 4 10 4" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M16 10C16 13.314 13.314 16 10 16" stroke="#7c9a7e" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="10" r="2" fill="white"/></svg></div>
+    Ripa <em>Elevate</em>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html"        class="nav-link">Home</a></li>
+    <li><a href="how-it-works.html" class="nav-link">How It Works</a></li>
+    <li><a href="questions.html"    class="nav-link">Question Bank</a></li>
+    <li><a href="for-parents.html"  class="nav-link">For Parents</a></li>
+    <li><a href="about.html"        class="nav-link act">Our Story</a></li>
+  </ul>
+  <div class="nav-auth" id="nav-guest">
+    <a href="app/login.html"   class="nav-link">Sign In</a>
+    <a href="for-parents.html" class="nav-cta">Get Started</a>
+  </div>
+  <button class="nav-burger" id="nav-burger"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html"        class="nav-link">Home</a>
+  <a href="how-it-works.html" class="nav-link">How It Works</a>
+  <a href="for-parents.html"  class="nav-link">For Parents</a>
+  <a href="about.html"        class="nav-link">Our Story</a>
+  <a href="for-parents.html"  class="nav-cta">Get Started</a>
+</div>
+
+<div class="page-body">
+
+<section class="about-hero">
+  <div class="wrap">
+    <div class="lbl lbl-sage">Our Story</div>
+    <h1 class="dis">Built from inside <em>the system</em></h1>
+    <p class="blg">Ripa Elevate was created by a licensed SLP who spent years inside the Department of Education — and a builder who kept asking: why is there no better tool than this?</p>
+  </div>
+</section>
+
+<section class="founders-section">
+  <div class="wrap">
+    <div class="founders-grid">
+      <div class="founder-card">
+        <div class="founder-avatar" style="background:var(--sage)">S</div>
+        <h3>The SLP Founder</h3>
+        <div class="founder-title">Licensed Speech-Language Pathologist</div>
+        <p>After years working with middle school students inside the NYC Department of Education, it became clear: the assessments we were using weren't designed for the students we were assessing. They measured reading level and math facts — but not whether a student could count change, navigate a social conflict, or make a decision under pressure.</p>
+        <p>Ripa Elevate was built to answer the questions IEP teams actually need answered: What can this student do independently? Where do they need support? What does growth look like over time?</p>
+      </div>
+      <div class="founder-card">
+        <div class="founder-avatar" style="background:var(--teal)">B</div>
+        <h3>The Builder</h3>
+        <div class="founder-title">Platform Strategist &amp; Product Builder</div>
+        <p>The frustration wasn't just with the tools — it was with the market gap. Parents of students with IEPs have almost no access to independent assessment outside of what the school provides. The school assessments are slow, opaque, and designed to meet compliance requirements — not to actually inform parents or students.</p>
+        <p>Building Ripa Elevate meant creating a product that could start with parents — people who desperately want to understand their child — and eventually build into schools from the bottom up, through parent demand.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mission-band">
+  <div class="wrap">
+    <div class="lbl" style="color:var(--s500);margin-bottom:14px">Our Mission</div>
+    <h2 class="dis">Assessment should serve the <em>student</em>, not the system</h2>
+    <p>We believe every student — especially those who learn differently — deserves to be seen for what they can do, not measured against what they can't. Assessment should be a tool for understanding, not a label or a ranking. It should tell parents something real. It should tell students something true.</p>
+    <div class="mission-values">
+      <div class="mv"><h4>Ability over deficit</h4><p>We design every question to find what a student CAN do at their level — not to document failure.</p></div>
+      <div class="mv"><h4>Transparency for families</h4><p>Parents shouldn't have to wait for an IEP meeting to understand their child's functional skills. They deserve direct access to clear information.</p></div>
+      <div class="mv"><h4>Growth over comparison</h4><p>We never compare students to each other. We measure each student against their own previous performance, over time.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="story-section">
+  <div class="wrap">
+    <div class="story-grid">
+      <div class="story-lbl">
+        <div class="lbl lbl-teal">How We Got Here</div>
+        <h2 class="dis mt-16" style="font-size:2rem">The longer version</h2>
+      </div>
+      <div class="story-body">
+        <p>The problem started with a meeting. An IEP meeting where a parent sat across the table, holding a report that was technically accurate but completely useless — a page full of grade-equivalent scores, standard deviations, and comparison bands that told her nothing about whether her son could make change for a $20 bill, or recognize when an adult online was trying to manipulate him, or plan well enough to get his homework done before practice.</p>
+        <p>That gap — between what schools measure and what parents actually need to know — is what Ripa Elevate is built to close. Not to replace school assessments. Not to compete with SLPs or psychologists. But to give families an independent, clear, affordable way to understand what their child can do in the areas that actually matter for their daily life.</p>
+        <p>We built the question bank from scratch. Every question was written with a specific student in mind — not a hypothetical average student, but a real twelve-year-old who might need to hear the question read aloud, might need a hint, might work slowly, and still gets the right answer when given the chance. That student deserves a score that reflects their ability, not their processing speed.</p>
+        <p>The platform is designed to be used before IEP meetings, before school evaluations, as a check-in between assessments, or simply because a parent wants to understand where their child is and where they're headed. No referral required. No waiting list. No school involvement needed unless you want it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ripa-brand">
+  <div class="wrap">
+    <div class="lbl lbl-sage">The Ripa Family</div>
+    <h2 class="dis mt-14">Two products. One mission.</h2>
+    <p class="blg mt-12">Ripa is our parent brand. Elevate is the platform you're on now — built for students with different learning needs. Diagnostics is our first product, for general assessment.</p>
+    <div class="brand-grid">
+      <div class="brand-card">
+        <span class="brand-tag" style="color:var(--teal)">Ripa Diagnostics</span>
+        <h3>For general learners</h3>
+        <p class="sm mt-8" style="color:var(--s500);line-height:1.75">Adaptive academic assessment for middle school students without specialized learning needs. Same four-level system. Same clean report. Focused on academic subjects.</p>
+      </div>
+      <div class="brand-card" style="border-color:var(--sage);background:var(--sage-m)">
+        <span class="brand-tag" style="color:var(--sage)">Ripa Elevate ← You are here</span>
+        <h3>For different learners</h3>
+        <p class="sm mt-8" style="color:var(--s600);line-height:1.75">Built specifically for students with IEPs, autism, intellectual disabilities, and language processing differences. Life skills + academic skills. Full support scaffolding built in.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-bottom" style="padding:32px 0 0">
+      <span>© 2025 Ripa Elevate</span>
+      <span><a href="index.html">Home</a> · <a href="for-parents.html">For Parents</a> · <a href="contact.html">Contact</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/nav.js"></script>
+<script>document.addEventListener('DOMContentLoaded', () => AuthManager.init());</script>
+</body>
+</html>
