@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Word Bank — Ripa Elevate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/nav.css">
+<link rel="stylesheet" href="css/components.css">
+<style>
+.wb-hero{padding:88px 0 48px;text-align:center;}
+.wb-hero h1.dis em{color:var(--teal);}
+.wb-hero .blg{max-width:540px;margin:16px auto 0;}
+
+.wb-controls{background:var(--white);border-bottom:1px solid var(--s200);padding:16px 0;position:sticky;top:68px;z-index:100;}
+.wb-controls-wrap{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.wb-search-wrap{position:relative;flex:1;min-width:220px;}
+.wb-search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--s400);pointer-events:none;}
+.wb-search{width:100%;padding:9px 12px 9px 36px;border:1.5px solid var(--s200);border-radius:var(--r8);font-size:.86rem;font-family:var(--sans);outline:none;transition:border-color .15s;}
+.wb-search:focus{border-color:var(--sage);}
+.wb-cats{display:flex;gap:6px;flex-wrap:wrap;}
+.wb-cat-btn{padding:6px 13px;border-radius:var(--r-full);border:1.5px solid var(--s200);font-size:.76rem;font-weight:500;cursor:pointer;font-family:var(--sans);background:var(--white);color:var(--s600);transition:all .15s;white-space:nowrap;}
+.wb-cat-btn.active{background:var(--teal);border-color:var(--teal);color:var(--white);}
+
+.wb-meta{display:flex;align-items:center;justify-content:space-between;padding:18px 0 10px;}
+.wb-count{font-size:.8rem;color:var(--s400);}
+
+.wb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding-bottom:96px;}
+.wb-card{background:var(--white);border:1px solid var(--s200);border-radius:var(--r16);padding:20px;}
+.wb-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px;}
+.wb-word{font-family:var(--serif);font-size:1.05rem;color:var(--s900);}
+.wb-def{font-size:.82rem;color:var(--s600);line-height:1.68;margin-bottom:8px;}
+.wb-ex{font-size:.76rem;color:var(--s400);line-height:1.6;margin-bottom:10px;}
+.wb-listen{background:var(--s50);border:1px solid var(--s200);border-radius:6px;padding:4px 10px;font-size:.7rem;color:var(--s500);cursor:pointer;font-family:var(--sans);transition:all .15s;}
+.wb-listen:hover{background:var(--s100);}
+
+@media(max-width:960px){.wb-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.wb-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<nav id="nav">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-mark"><svg viewBox="0 0 20 20" fill="none" width="20" height="20"><path d="M4 10C4 6.686 6.686 4 10 4" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M16 10C16 13.314 13.314 16 10 16" stroke="#7c9a7e" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="10" r="2" fill="white"/></svg></div>
+    Ripa <em>Elevate</em>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html"        class="nav-link">Home</a></li>
+    <li><a href="how-it-works.html" class="nav-link">How It Works</a></li>
+    <li><a href="questions.html"    class="nav-link">Question Bank</a></li>
+    <li><a href="word-bank.html"    class="nav-link act">Word Bank</a></li>
+    <li><a href="for-parents.html"  class="nav-link">For Parents</a></li>
+  </ul>
+  <div class="nav-auth" id="nav-guest">
+    <a href="app/login.html"   class="nav-link">Sign In</a>
+    <a href="for-parents.html" class="nav-cta">Get Started</a>
+  </div>
+  <button class="nav-burger" id="nav-burger"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html"    class="nav-link">Home</a>
+  <a href="word-bank.html" class="nav-link">Word Bank</a>
+  <a href="for-parents.html" class="nav-cta">Get Started</a>
+</div>
+
+<div class="page-body">
+
+<section class="wb-hero">
+  <div class="wrap">
+    <div class="lbl lbl-teal">Word Bank</div>
+    <h1 class="dis mt-10">Every word your student <em>needs to know</em></h1>
+    <p class="blg">300+ definitions across all 7 skill categories. Search, filter, and tap any word to hear it read aloud. Use it before an assessment to prepare or after to review.</p>
+  </div>
+</section>
+
+<div class="wb-controls">
+  <div class="wrap">
+    <div class="wb-controls-wrap">
+      <div class="wb-search-wrap">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="wb-search" placeholder="Search words or definitions…" oninput="WordBank.onSearch(this.value)">
+      </div>
+      <div class="wb-cats">
+        <button class="wb-cat-btn active" data-cat="all"      onclick="WordBank.setCategory('all')">All</button>
+        <button class="wb-cat-btn"        data-cat="math"     onclick="WordBank.setCategory('math')">📐 Math</button>
+        <button class="wb-cat-btn"        data-cat="reading"  onclick="WordBank.setCategory('reading')">📖 Reading</button>
+        <button class="wb-cat-btn"        data-cat="money"    onclick="WordBank.setCategory('money')">💰 Money</button>
+        <button class="wb-cat-btn"        data-cat="social"   onclick="WordBank.setCategory('social')">🤝 Social</button>
+        <button class="wb-cat-btn"        data-cat="safety"   onclick="WordBank.setCategory('safety')">⚠️ Safety</button>
+        <button class="wb-cat-btn"        data-cat="time"     onclick="WordBank.setCategory('time')">⏱️ Time</button>
+        <button class="wb-cat-btn"        data-cat="decision" onclick="WordBank.setCategory('decision')">🧠 Decision</button>
+        <button class="wb-cat-btn"        data-cat="general"  onclick="WordBank.setCategory('general')">📘 General</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="wb-meta">
+    <span class="wb-count" id="wb-count">Loading…</span>
+  </div>
+  <div class="wb-grid" id="wordbank-grid">
+    <div style="grid-column:1/-1;padding:48px 0;text-align:center"><div class="spinner" style="margin:0 auto;width:28px;height:28px"></div></div>
+  </div>
+</div>
+
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-bottom" style="padding:32px 0 0">
+      <span>© 2025 Ripa Elevate</span>
+      <span><a href="questions.html">Question Bank</a> · <a href="for-parents.html">For Parents</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/wordbank.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  AuthManager.init();
+  WordBank.load();
+});
+</script>
+</body>
+</html>
